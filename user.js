@@ -41,7 +41,8 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     app.get('/user.css',function(req,res){
         res.sendFile(__dirname+"/public_pro/user.css")
         });
-        app.get("*",function(req,res){
+
+    app.get("*",function(req,res){
           res.redirect("/reg");
       });
 
@@ -178,7 +179,7 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
     res.redirect('/map');
 });   
 
-app.listen(3000,function(){
+app.listen(process.env.PORT || 3000,function(){
     console.log("Server :3000");
 })
 }).catch(function(error){
