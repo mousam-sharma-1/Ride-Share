@@ -1,0 +1,19 @@
+{
+  "name": "min_pro_clg",
+  "version": "1.0.0",
+  "description": "Ride share web app",
+  "main": "user.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "git": "^0.1.5",
+    "mongodb": "^3.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node user.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mousam",
+  "license": "ISC"
+}

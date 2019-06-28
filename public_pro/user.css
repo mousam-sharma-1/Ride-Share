@@ -1,0 +1,189 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+body {
+    /* background-image:url("watermarked_cover.png"); */
+     
+     background: midnightblue; 
+     /* background-repeat: no-repeat; */
+     transition: all 1s ease-in-out;  
+}
+
+#i_field1 , #i_field2 , #i_field3, #l_field1, #l_field2, #l_field3, #vn_field1, #vn_field2, #vn_field3 {
+    width: 100px;
+}
+#sp1, #sp2, #sp3, #sp4, #sp5, #sp6, #sp7, #sp8, #sp9, #sp10, #sp11, #sp12, #sp13, #sp14{
+    visibility: hidden;
+}
+/* img {
+    margin-top: 90px;
+    width: 10%;
+    height: 20%;
+    position: relative;
+} */
+.driver {
+    display: none;
+}
+.driver-tab{
+    border-top-right-radius: 50px;
+}
+.rider-tab{
+    border-top-left-radius: 50px;
+}
+.driver .button_d {
+    width: 40%;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    background: olivedrab;
+    color: aliceblue;
+    margin: 20px 0px 0px 175px;;
+    height: 45px;
+    font-size: 22px; 
+    cursor: pointer;
+}
+
+.form{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% ,-45%);
+    width: 80%;
+    height: 100%;
+    max-width:600px;
+    max-height: 900px;
+    background:white;
+    border-radius: 50px;
+    box-sizing: border-box;
+    box-shadow: 0 0 25px #000000b3;
+}
+.form .head{
+    width:100%;
+    height: 55px;
+    display: flex;
+
+}
+
+.form .head >div{
+    width:50%;
+    height:100%;
+    text-align: center;
+    font-size: 22px;
+    line-height: 55px;
+    cursor: pointer;
+    background: transparent;
+}
+.form .head .rider >div:nth-child(1),.form .head > div:nth-child(2) {
+    background: rgb(182, 180, 180);
+    /* transition: all 3s ease-in-out; */
+}
+.form .head .driver > div:nth-child(2){
+    background: transparent !important;
+    /* transition: all 3s ease-in-out; */
+}
+.form .body{
+    position: absolute;
+    overflow: hidden;
+    width:100%;
+    height: 100%;
+    
+}
+.form .body > div {
+    position: absolute;
+    width:100%;
+    height: 100%;
+    /* transition: all 3s ease-in-out; */
+}
+.form .body .form-row {
+    border-top: 1px solid #ccc;
+}
+.form .body .form-row input {
+    border: none;
+    outline: none;
+    border-bottom: 2px solid black;
+    width: 95%;
+    height: 25px;
+    margin: 8px;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 18px;
+}
+.form .body .form-row input:focus {
+    border-bottom: 2px solid blue;
+    transition: all .2s ease-in-out;
+}
+.form .body .form-row .button_r {
+    width: 40%;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    background: midnightblue;
+    color: aliceblue;
+    margin: 20px 0px 0px 175px;
+    height: 45px;
+    font-size: 22px; 
+    cursor: pointer;
+}
+.form .body > div.rider {
+    left: 0%;
+}
+.form .body > div.driver {
+    left: 100%;
+}
+.form .body .active > div.rider {
+    left: -100%;
+}
+.form .body .active > div.driver {
+    left: 0%;
+}
+@media screen and (max-width: 600px) {
+    .form .body .form-row input{
+      width: 90%;
+      margin-top: 0;
+    }
+    .form  {
+        width: 85%;
+        position: absolute;
+        height: 885px;
+        transform:  translate(-50% ,-30%);
+    }
+    .form .body .form-row .button_r, .form .body .form-row .button_d{
+    margin-left: 85px;
+        margin-top: 0;
+      }
+  }
+   @media screen and (min-width: 600px) {
+    .form .body .form-row input{
+        width: 90%;
+        margin-top: 0;
+      }
+      .form  {
+          width: 85%;
+          position: absolute;
+          height: 875px;
+          transform:  translate(-50% ,-12%);
+      }
+      .form .body .form-row .button_r, .form .body .form-row .button_d{
+      margin-left: 150px;
+          margin-top: 0;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .form .body .form-row input{
+            width: 90%;
+            margin-top: 0;
+          }
+          .form  {
+              width: 85%;
+              position: absolute;
+              height: 875px;
+              transform:  translate(-50% ,-30%);
+          }
+          .form .body .form-row .button_r, .form .body .form-row .button_d{
+                margin-left: 175px;
+                margin-top: 0;
+            }
+        }
