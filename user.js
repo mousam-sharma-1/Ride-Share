@@ -8,7 +8,7 @@ var urlEncodedParser = body_parser.urlencoded({extended:false});
 
 var mongodb = require('mongodb');
 var mongoClient = require('mongodb').MongoClient
-var url = "mongodb://localhost:27017";
+var url = "mongodb+srv://Mousam:mousam1399@ridesharecluster-28swm.mongodb.net/test?retryWrites=true&w=majority";
 
 
 
