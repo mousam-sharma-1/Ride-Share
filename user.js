@@ -99,7 +99,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
     )})
 app.get("/home",function(req,res){
 
-    res.sendFile("C:/Users/Kanha/mousam/min_pro/user_purana.html"); 
+    res.sendFile("C:/Users/Kanha/mousam/min_pro_clg/public_pro/user_purana.html"); 
 });
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
     var vt="rider";
