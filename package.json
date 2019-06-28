@@ -7,7 +7,8 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "git": "^0.1.5",
-    "mongodb": "^3.2.4"
+    "mongodb": "^3.2.4",
+    "node-geocoder": "^3.23.0"
   },
   "devDependencies": {},
   "scripts": {
