@@ -42,11 +42,6 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
         res.sendFile(__dirname+"/public_pro/user.css")
         });
 
-    app.get("*",function(req,res){
-          res.redirect("/reg");
-      });
-
-
 app.get("/reg",function(req,res){
         res.sendFile(__dirname+"/public_pro/signup.html");
     });
