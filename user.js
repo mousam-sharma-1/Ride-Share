@@ -91,7 +91,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                 res.redirect("/home");
                   }
                   else{
-                    res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='http://localhost:3000/reg'>CLICK</a>")
+                    res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
                   }
                 }
 
