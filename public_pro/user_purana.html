@@ -1,12 +1,12 @@
 <html>
     <head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Wheel 4 pool : an PWA for  vehicle pooling</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <title>Wheel 4 pool : an PWA for  vehicle pooling</title>
         <link rel="stylesheet" href="user.css">
     </head>
-    
    <body id="bb">
-       
+      <div id="nav-placeholder"></div>
        <div class="form">
            <div class="head" class="driver">
                <div data-tab="rider" id="r2" class="rider-tab" onclick="swap(this)">RIDER</div>
@@ -496,4 +496,10 @@ function swap(referTo){
 }
 </script>
    </body> 
+   
+   <script>
+      $(function(){
+        $("#nav-placeholder").load("navbar.html");
+      });
+      </script>
 </html>

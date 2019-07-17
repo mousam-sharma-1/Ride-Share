@@ -19,53 +19,32 @@
     nav{
             background-color: '';
         }
-.form-control {
+.form-group-1 {
 	width: 42%;
 	margin-left: 25%;
 }
-#b {
-margin-left:40%;
-}
 @media screen and (max-width: 600px) {
-    #b {
-margin-left:30%;
-}
-.form-control {
+.form-group-1 {
 	width: 75%;
 	margin-left: 13%;
 }
-#tf{
-    color: rgb(75, 72, 72);
-    padding-left: 50px;
-}
 }
 @media screen and (min-width: 600px) {
-    #b {
-margin-left:35%;
-}
-.form-control {
+.form-group-1 {
 	width: 65%;
 	margin-left: 15%;
 }
-#tf{
-    color: rgb(75, 72, 72);
-    padding-left: 100px;
-}
-
 }
 @media screen and (min-width: 900px) {
-    .form-control {
+    .form-group-1 {
 	width: 42%;
-	margin-left: 25%;
+	margin-left: 30%;
 }
-#b {
-margin-left:40%;
+.navbar-right{
+    position: absolute;
+     top: 20%;
+      left: 90%
 }
-#tf{
-    color: rgb(75, 72, 72);
-    padding-left: 350px;
-}
-
 }
 </style>
 
@@ -73,7 +52,7 @@ margin-left:40%;
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         
         <a href="#" class="navbar-brand">
-                <img src="11favicon.png" width="35" height="35" class="d-inline-block align-top" alt="">Sign Up
+                <img src="11favicon.png" width="35" height="35" class="d-inline-block align-top" alt="">Ride Share
             </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#MyNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,12 +64,16 @@ margin-left:40%;
             <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="#">About me</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/log">LogIn</a></li>
             </ul>
         </div>
     </nav>
     <hr><hr>
     <form action="/doregister" method="POST" name="myForm">
+        <div class="form-group-1">
+           <u> <h2 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-style:initial; color: rgb(24, 121, 185)">Sign Up&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2></u><br>
+
         <div class = "form-group">
         <input class = "form-control" type="text" id="n1" name="name" ng-model="name" placeholder="Name" required>
     </div>
@@ -117,7 +100,8 @@ margin-left:40%;
     <div class = "form-group">
         <input class = "form-control" type="password" name="password" ng-model="password" placeholder="PASSWORD" required>
     </div>
-        <input class = "btn btn-primary" id="b" type="submit" value="SIGNUP">
+        <center><input class = "btn btn-primary" type="submit" value="SIGNUP"></center>
+    </div>
 </form>    
 
 </body>

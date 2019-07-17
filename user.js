@@ -34,7 +34,9 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     var geocoder = NodeGeocoder(options);
     
 
-    
+    app.get("",function(req,res){
+      res.sendFile(__dirname+"/public_pro/login.html");
+    })    
 
 
 
