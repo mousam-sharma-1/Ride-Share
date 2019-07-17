@@ -36,7 +36,21 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
 
     app.get("",function(req,res){
       res.sendFile(__dirname+"/public_pro/login.html");
-    })    
+    })
+
+    app.get("/blog",function(req,res){
+      res.sendFile(__dirname+"/public_pro/blog.html"); 
+    })
+
+    app.get("/about",function(req,res){
+      res.sendFile(__dirname+"/public_pro/about.html"); 
+    })
+
+    app.get("/contact",function(req,res){
+      res.sendFile(__dirname+"/public_pro/contact.html"); 
+    })
+
+
 
 
 
@@ -90,7 +104,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                 console.log(result+"===="+result.length);
                 // console.log(typeof(result))
                 console.log("SUCESSFULL SIGN IN")
-                res.redirect("/home");
+                res.redirect("/user");
                   }
                   else{
                     res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
@@ -99,7 +113,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
 
                   
     )})
-app.get("/home",function(req,res){
+app.get("/user",function(req,res){
 res.sendFile(__dirname+"/public_pro/user_purana.html"); 
 });
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
