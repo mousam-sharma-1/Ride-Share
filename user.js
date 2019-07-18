@@ -79,16 +79,16 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         db.collection('t_user').insertOne({'name':qdata.name,'mobile_no':qdata.mobile_no,'gender':qdata.gender,'age':qdata.age,'work':qdata.work,'password':qdata.password}),function(err,Result){
         if(err)
         throw err;
-       
+        }
+      res.redirect("/log");
     }
-    res.redirect("/log");
-  }
-})
-       
-    });
+  })
+});
+
     app.get("/log",function(req,res){
       res.sendFile(__dirname+"/public_pro/login.html");
     })
+
     app.get("/checkLogin",function(req,res){
       
       var mob = req.query.mobile;
@@ -109,13 +109,15 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                   else{
                     res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
                   }
-                }
+                })
+              })
 
-                  
-    )})
+
 app.get("/user",function(req,res){
 res.sendFile(__dirname+"/public_pro/user_purana.html"); 
 });
+
+
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
     var vt="rider";
     console.log("rider");

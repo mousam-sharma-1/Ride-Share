@@ -1,278 +1,147 @@
 <html>
     <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <title>Wheel 4 pool : an PWA for  vehicle pooling</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<title>Wheel 4 pool : an PWA for  vehicle pooling</title>
         <link rel="stylesheet" href="user.css">
     </head>
-   <body id="bb">
-      <div id="nav-placeholder"></div>
+
+
+
+
+    <style>
+        @media screen and (min-width: 900px) {
+        .navbar-right{
+            position: absolute;
+             top: 20%;
+              left: 90%
+        }
+        }
+        </style>
+        <body>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                
+                <a href="#" class="navbar-brand">
+                        <img src="11favicon.png" width="35" height="35" class="d-inline-block align-top" alt="">Ride Share
+                    </a>
+        
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#MyNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+        
+                <div class="collapse navbar-collapse" id="MyNav">
+                    <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="/about">About me</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/contact">contact</a></li>
+                            <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/log">Log Out</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <hr><hr>
+        </body>
+
+
+
+
+
+
+
+   <body id="bb" ng-app="">
        <div class="form">
            <div class="head" class="driver">
-               <div data-tab="rider" id="r2" class="rider-tab" onclick="swap(this)">RIDER</div>
-               <div data-tab="driver" id="d2" class="driver-tab" onclick="swap(this)">DRIVER</div></div>
-               <div class="body" id="form-body">
+               <div data-tab="rider" id="r2" style="background-color: black; color: white" class="rider-tab" onclick="swap(this)">RIDER</div>
+               <div data-tab="driver" id="d2" style="background-color: rgb(182, 180, 180); color: white" class="driver-tab" onclick="swap(this)">DRIVER</div>
+              </div>
+               <div class="body">
 
                    
                    
-                       <div class="form-row">
+<!-- <div class="form-row">
+  <div class="fo">rgb(235, 230, 230) -->
 
-<form onsubmit=" return rider_validation()" action="/doreg/rider" method="POST">
-                        <div class="rider" id = "r1"><br>
-                        &nbsp <b>Name</b> <input type="text" id="n_field" placeholder="" name="f_name" onblur="name_validation()">
-                        <div id="sp1">z</div>   
-                        <br><br>
-                        &nbsp <b>Mobile Number</b> <input type="number" id="m_field" placeholder="+91" name="mob" onblur="mobile_validation()">
-                        <div id="sp2">z</div>        
-                        <br><br>
-                        &nbsp <b>Age</b> <input type="number" id="age" placeholder="" name="age" onblur="age_validation()">
-                        <div id="sp3">z</div>
-                        <br><br>
-                        &nbsp <b>Work</b>   <select name="work" id="w_field" onblur="work_validation()">
-                                    <option></option>        
-                                    <option>service</option>
-                                    <option>student</option>
-                                    <option>buisness</option>
-                                    <option>other</option>
-                                </select>
-                                <div id="sp4">z</div>
-                                <br><br>
+<form action="/doreg/rider" method="POST" name="myForm">
+  <div class="rider" id ="r1"><br>       
+  <div class="fields">
+    <center><b>Vehicle Type</b>&nbsp;<select name="vtype" required>                                            
+                              <option>2 wheeler</option>  
+                              <option>4 wheeler</option>
+                          </select></center>
                         
-                        &nbsp <b>Email</b> <input type="email" id="e_field" placeholder="@Eg:  example@xyz.com" name="email" onblur="email_validation()">
-                                <div id="sp5">z</div>        
-                                <br><br>
-                        &nbsp <b>Adhar Card Number</b><br><br> <input type="text" id="i_field1" placeholder="" name="idp" maxlength="4" onblur="adhar_validation()" onkeyup="movecursor(this,'i_field2')"><b>-</b><input type="text" id="i_field2" placeholder="" name="idp" maxlength="4" onblur="adhar_validation()" onkeyup="movecursor(this,'i_field3')"><b>-</b><input type="text" id="i_field3" placeholder="" name="idp" maxlength="4" onblur="adhar_validation()">
-                        <div id="sp6">z</div>
-                                    <br><br>
-                        <input type="file" accept="image/*" placeholder="" name="id" id="img_field" onblur="img_validation()">
-                        <div id="sp7">z</div>        
                         <br><br>
-                                <button class="button_r">Submit</button>
-                                
-                       </div>
-                  
-                  </form>
-<form onsubmit="return driver_validation()" action="/doreg/driver" method="POST" >
-                   <div class="driver" id = "d1"><br>
-                    &nbsp <b>Name</b> <input type="text" id="dn_field" placeholder="" name="name_d" onblur="dname_validation()">
-                    <div id="sp8">z</div>
-                                <br><br>
-                    &nbsp    <b>Mobile Number</b> <input type="number" id="dm_field" placeholder="+91" name="mob" onblur="dmobile_validation()">
-                    <div id="sp9">z</div>                   
-                                <br><br>
-                    &nbsp    <b>Vehicle Type</b>      <select name="vtype" id="v_field" onblur="dvehicle_validation()">
-                                                 <option></option>                         
-                                                 <option>4 wheeler</option>
-                                                 <option>2 wheeler</option>
-                                      </select>
-                                      <div id="sp10">z</div>
-                                      <br><br>
-                    &nbsp <b>Vehicle Model</b> <input type="text" id="mod_field" placeholder="" name="veh_m" onblur="dmodel_validation()">
-                    <div id="sp11">z</div>                
-                    <br><br>
-                    &nbsp    <b>Vehicle Number</b><br><input type="text" id="vn_field1" placeholder="@Eg: MP" name="vno" maxlength="2" onblur="dvnum_validation()" onkeyup="movecursor(this,'vn_field2')">&nbsp<input type="text" id="vn_field2" placeholder="09" name="vno" maxlength="2" onblur="dvnum_validation()" onkeyup="movecursor(this,'vn_field3')">&nbsp<input type="text" id="vn_field3" placeholder="1234" name="vno" maxlength="4" onblur="dvnum_validation()">
-                    <div id="sp12">z</div>                
-                    <br><br>
-                    &nbsp <b>License Number</b><br> <input type="text" id="l_field" placeholder="" name="lic" onblur="dlicence_validation()">
-                    <div id="sp13">z</div>                
-                    <br><br>
-                    <input type="file" accept="image/*" id="imgd_field" placeholder="" name="id" onblur="dimg_validation()">
-                    <div id="sp14">z</div>
-                    <br><br>                            
-                            <button class="button_d">Submit</button>
+</div> 
+<div class="fields">                
+  <center> <b>Date</b><br><input type="datetime-local" name="date" required>     </center>  
+                              
+                        <br><br>
+</div>
+<div class="fields">                       
+  <center> <b>Seats</b>&nbsp;<select name="seat" required>                   
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>                        
+                              <option>4</option>
+                        </select></center>
+                        
+                        <br><br>
+</div>
+<center><button type="submit">Request Ride</button></center>
+<center><div class="img"><img src="humanly_dribble.gif"></div></center>
+</div>                 
+</form>
+<!-- </div>
+</div> -->
+
+
+<form action="/doreg/driver" method="POST" name="myForm">
+                   <div class="driver" id="d1"><br>
+                    <div class="fields">
+                      <center> <b>Vehicle Type</b>&nbsp;<select name="vtype" required>                                            
+                                                    <option>2 wheeler</option>  
+                                                    <option>4 wheeler</option>
+                                                </select></center>
+                                              
+                                              <br><br>
+                      </div> 
+                      <div class="fields">                
+                        <center><b>Date</b><br><input type="datetime-local" name="date" required>   </center>    
+                                                    
+                                              <br><br>
+                      </div>
+                      <div class="fields">                       
+                        <center><b>Seats</b>&nbsp;<select name="vtype" required>                   
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>                        
+                                                    <option>4</option>
+                                              </select></center>
+                            
+                                              <br><br>
+                      </div>
+                      <center><button type="submit">Offer Ride</button></center>
+                    </center> <div class="img"><img src="vi_hedder_rubberduck.gif"></div></center>
                    </div>
                 </form>
-                   
-                </div>
+              
+              </div>
+          </div>
 
-
-                </div>
-        </div>
-<script>
-
+<!-- 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////        
 
-        function name_validation(){
-         var txtname=document.getElementById('n_field');
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-        
-         var regx=/[a-zA-Z]+$/;
-
-          if(txtname.value !=""){           //rider name
-            if(txtname.value.length <= 2){
-              document.getElementById('sp1').style.visibility="visible";
-              document.getElementById('sp1').innerHTML="**should be greater than 2 character";
-              document.getElementById('sp1').style.color="red";
-              return false;
-      }
-      if(!regx.test(txtname.value)){
-              document.getElementById('sp1').style.visibility="visible";
-              document.getElementById('sp1').innerHTML="**no number or symbols are allowed";
-              document.getElementById('sp1').style.color="red";
-          return false;
-      }
-      document.getElementById('sp1').style.visibility="hidden";
-    }
-            
-      else{
-              document.getElementById('sp1').style.visibility="visible";
-             document.getElementById('sp1').innerHTML="**empty";
-             document.getElementById('sp1').style.color="red";
-             return false;
-      }
-     
-    }
-    function mobile_validation(){
-       var mobnum=document.getElementById('m_field');
-
-      if(mobnum.value !=""){           //rider mobile num
-            if(mobnum.value.length != 10){
-            document.getElementById('sp2').style.visibility="visible";
-             document.getElementById('sp2').innerHTML="**should be of 10 character";
-              document.getElementById('sp2').style.color="red";
-              return false;
-      }
-// if(mobnum.value !="" || mobnum.value.length != 10){
-   document.getElementById('sp2').style.visibility="hidden";
-
-// }
-  }
-    else{
-              document.getElementById('sp2').style.visibility="visible";
-
-              document.getElementById('sp2').innerHTML="**empty";
-             document.getElementById('sp2').style.color="red";
-             return false;
-      }
-    }
-    function age_validation(){
-      var age=document.getElementById('age');
-
-      if(age.value !=""){           //rider Age
-            if(age.value <= 17){
-              document.getElementById('sp3').style.visibility="visible";
-             document.getElementById('sp3').innerHTML="**should be of atleast 18 ";
-              document.getElementById('sp3').style.color="red";
-              return false;
-      }
-    document.getElementById('sp3').style.visibility="hidden";
-    }
-    else{
-            document.getElementById('sp3').style.visibility="visible";
-
-            document.getElementById('sp3').innerHTML="**empty";
-             document.getElementById('sp3').style.color="red";
-             return false;
-      }
-    }
-    function work_validation(){
-
-         var work=document.getElementById('w_field');
-
-            if(work.value ==""){           //rider work
-       document.getElementById('sp4').style.visibility="visible";
-        document.getElementById('sp4').innerHTML="**not selected";
-             document.getElementById('sp4').style.color="red";
-             return false;
-      }
-      else{
-       document.getElementById('sp4').style.visibility="hidden";
-      }
-
-    }
-    function email_validation(){
-      var email=document.getElementById('e_field');
-
-      if(email.value ==""){           //rider email
-        document.getElementById('sp5').style.visibility="visible";
-
-        document.getElementById('sp5').innerHTML="**empty";
-             document.getElementById('sp5').style.color="red";
-             return false;
-      }
-      else{
-        document.getElementById('sp5').style.visibility="hidden";
-      }
-
-    }
-    function adhar_validation(){
-      var id1=document.getElementById('i_field1');
-         var id2=document.getElementById('i_field2');
-         var id3=document.getElementById('i_field3');
-         var regx_a=/[0-9]+$/;
-
-         if(id1.value !="" || id2.value !="" || id3.value !=""){           //rider adhar card number
-          if(!regx_a.test(id1.value)){
-              document.getElementById('sp6').style.visibility="visible";
-              document.getElementById('sp6').innerHTML="**only numbers  are allowed";
-              document.getElementById('sp6').style.color="red";
-          return false;
-      }
-      if(!regx_a.test(id2.value)){
-              document.getElementById('sp6').style.visibility="visible";
-              document.getElementById('sp6').innerHTML="**only numbers  are allowed";
-              document.getElementById('sp6').style.color="red";
-          return false;
-      }
-      if(!regx_a.test(id3.value)){
-              document.getElementById('sp6').style.visibility="visible";
-              document.getElementById('sp6').innerHTML="**only numbers  are allowed";
-              document.getElementById('sp6').style.color="red";
-          return false;
-      }
-        if(id1.value.length != 4){
-      document.getElementById('sp6').style.visibility="visible";
-
-             document.getElementById('sp6').innerHTML="**id should be of 12 character";
-              document.getElementById('sp6').style.color="red";
-              return false;
-      }if(id2.value.length != 4){
-      document.getElementById('sp6').style.visibility="visible";
-
-             document.getElementById('sp6').innerHTML="**id should be of 12 character";
-              document.getElementById('sp6').style.color="red";
-              return false;
-      }if(id3.value.length != 4){
-             document.getElementById('sp6').style.visibility="visible";
-
-             document.getElementById('sp6').innerHTML="**id should be of 12 character";
-              document.getElementById('sp6').style.color="red";
-              return false;
-      }
-      document.getElementById('sp6').style.visibility="hidden";
-      }
-      else{
-        document.getElementById('sp6').style.visibility="visible";
-
-        document.getElementById('sp6').innerHTML="**empty";
-             document.getElementById('sp6').style.color="red";
-             return false;
-      }
-        
-    }
-    function img_validation(){
-      var img=document.getElementById('img_field');
-
-      if(img.value ==""){           //rider id-image
-        document.getElementById('sp7').style.visibility="visible";
-
-        document.getElementById('sp7').innerHTML="**empty";
-             document.getElementById('sp7').style.color="red";
-             return false;
-      }
-      else{
-        document.getElementById('sp7').style.visibility="hidden";
-      }
-    }
-    function rider_validation(){
-      if(name_validation()==false || mobile_validation()==false || age_validation()==false || work_validation()==false || email_validation()==false || adhar_validation()==false || img_validation()==false){
-return false
-      }
-    }
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<script>
 
 function movecursor(fromTextBox,toTextBox) {
   var length = fromTextBox.value.length;
@@ -282,224 +151,38 @@ function movecursor(fromTextBox,toTextBox) {
     document.getElementById(toTextBox).focus();
   }
 }
-  
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function dname_validation(){                                             //driver  name validation
-
-                  var txtname_d=document.getElementById('dn_field');
-                  var regx=/[a-zA-Z]+$/;
-
-
-                  if(txtname_d.value !=""){           //driver name
-                  if(txtname_d.value.length <= 2){
-                  document.getElementById('sp8').style.visibility="visible";
-
-                  document.getElementById('sp8').innerHTML="**should be greater than 2 character";
-                    document.getElementById('sp8').style.color="red";
-                    return false;
-                  }
-                  if(!regx.test(txtname_d.value)){
-                  document.getElementById('sp8').style.visibility="visible";
-
-                  document.getElementById('sp8').innerHTML="**no number or symbols are allowed";
-                    document.getElementById('sp8').style.color="red";
-                  return false;
-                  }
-                  document.getElementById('sp8').style.visibility="hidden";
-                  }
-                  else{
-                  document.getElementById('sp8').style.visibility="visible";
-
-                  document.getElementById('sp8').innerHTML="**empty";
-                  document.getElementById('sp8').style.color="red";
-                  return false;
-                  }
-             }
-   function dmobile_validation() {
-               var mobnum_d=document.getElementById('dm_field');
-
-
-               if(mobnum_d.value !=""){           //driver mobile num
-                  if(mobnum_d.value.length != 10){
-                  document.getElementById('sp9').style.visibility="visible";
-
-                  document.getElementById('sp9').innerHTML="**should be of 10 character";
-                    document.getElementById('sp9').style.color="red";
-                    return false;
-                  }
-                  document.getElementById('sp9').style.visibility="hidden";
-                  }
-                  else{
-                  document.getElementById('sp9').style.visibility="visible";
-
-                  document.getElementById('sp9').innerHTML="**empty";
-                  document.getElementById('sp9').style.color="red";
-                  return false;
-                  }
-                      }
-  function dvehicle_validation() {
-             var vtype_d=document.getElementById('v_field');
-
-             
-
-                  if(vtype_d.value ==""){           //driver vehicle type
-                  document.getElementById('sp10').style.visibility="visible";
-
-                  document.getElementById('sp10').innerHTML="**empty";
-                  document.getElementById('sp10').style.color="red";
-                  return false;
-                  }
-                  document.getElementById('sp10').style.visibility="hidden";
-
-                    }
-   function dmodel_validation(){
-             var vmodel_d=document.getElementById('mod_field');
-
-             
-
-                  if(vmodel_d.value ==""){           //driver vehicle model
-                  document.getElementById('sp11').style.visibility="visible";
-
-                  document.getElementById('sp11').innerHTML="**empty";
-                  document.getElementById('sp11').style.color="red";
-                  return false;
-                  }
-                  document.getElementById('sp11').style.visibility="hidden";
-
-                  }
-    function dvnum_validation(){
-             var vnum_d1=document.getElementById('vn_field1');
-             var vnum_d2=document.getElementById('vn_field2');
-             var vnum_d3=document.getElementById('vn_field3');
-             var regx_vn=/[a-zA-Z]+$/;
-             var regx_vn2=/[0-9]+$/;
-
-
-                  if(vnum_d1.value !="" || vnum_d2.value !="" || vnum_d3.value !=""){           //driver vehicle num
-                  if(vnum_d1.value.length != 2){
-                  document.getElementById('sp12').style.visibility="visible";
-
-                  document.getElementById('sp12').innerHTML="**should be of 8 character";
-                    document.getElementById('sp12').style.color="red";
-                    return false;
-                  }
-                  if(!regx_vn.test(vnum_d1.value)){
-              document.getElementById('sp12').style.visibility="visible";
-              document.getElementById('sp12').innerHTML="**only characters are allowed in state code";
-              document.getElementById('sp12').style.color="red";
-          return false;
-      }
-                  if(vnum_d2.value.length != 2){
-                  document.getElementById('sp12').style.visibility="visible";
-
-                  document.getElementById('sp12').innerHTML="**should be of 8 character";
-                    document.getElementById('sp12').style.color="red";
-                    return false;
-                  }
-                  if(!regx_vn2.test(vnum_d2.value)){
-              document.getElementById('sp12').style.visibility="visible";
-              document.getElementById('sp12').innerHTML="**only number are allowed in city code";
-              document.getElementById('sp12').style.color="red";
-          return false;
-      }
-
-                  if(vnum_d3.value.length != 4){
-                  document.getElementById('sp12').style.visibility="visible";
-
-                  document.getElementById('sp12').innerHTML="**should be of 8 character";
-                    document.getElementById('sp12').style.color="red";
-                    return false;
-                  }
-                  if(!regx_vn2.test(vnum_d3.value)){
-              document.getElementById('sp12').style.visibility="visible";
-              document.getElementById('sp12').innerHTML="**only number are allowed in vehicle number";
-              document.getElementById('sp12').style.color="red";
-          return false;
-      }
-         document.getElementById('sp12').style.visibility="hidden";
-                  }
-                  else{
-                  document.getElementById('sp12').style.visibility="visible";
-
-                  document.getElementById('sp12').innerHTML="**empty";
-                  document.getElementById('sp12').style.color="red";
-                  return false;
-                  }
-                  }
-    function dlicence_validation(){
-             var licnum_d=document.getElementById('l_field');
-
-             
-
-                  if(licnum_d.value !=""){                       //driver licence number
-                  if(licnum_d.value.length != 16){
-                  document.getElementById('sp13').style.visibility="visible";
-
-                  document.getElementById('sp13').innerHTML="**licence number should be of 16 character no '-' is required";
-                    document.getElementById('sp13').style.color="red";
-                    return false;
-                  }
-                  document.getElementById('sp13').style.visibility="hidden"; 
-                }
-                else{
-                  document.getElementById('sp13').style.visibility="visible";
-
-                  document.getElementById('sp13').innerHTML="**empty";
-                  document.getElementById('sp13').style.color="red";
-                  return false;
-                  }
-              }
-   function dimg_validation(){
-              var img_d=document.getElementById('imgd_field');
-        
-
-
-                  if(img_d.value ==""){                                     //driver id-image
-                  document.getElementById('sp14').style.visibility="visible";
-
-                  document.getElementById('sp14').innerHTML="**empty";
-                  document.getElementById('sp14').style.color="red";
-                  return false;
-       }
-       document.getElementById('sp14').style.visibility="hidden";
-
-      }
-
-function driver_validation(){
-  if(dname_validation()==false || dmobile_validation()==false || dvehicle_validation()==false || dmodel_validation()==false || dvnum_validation()==false || dlicence_validation()==false || dimg_validation()==false){
-return false
-      }
-}
 
 function swap(referTo){ 
      if(referTo.getAttribute("data-tab")== "rider") {
       document.getElementById('r1').style.display ="block";
       document.getElementById('d1').style.display ="none";
-      document.getElementById('bb').style.background ="midnightblue";
+      document.getElementById('bb').style.background ="";
       document.getElementById('d2').style.background="rgb(182, 180, 180)";
-      document.getElementById('r2').style.background="white";
-     // document.getElementById('bb').style.backgroundImage ="url(watermarked_cover.png)";
-              
+      document.getElementById('r2').style.background="black";
     }
     else if(referTo.getAttribute("data-tab")== "driver") {
         document.getElementById('d1').style.display="block";
         document.getElementById('r1').style.display ="none";
-       document.getElementById('bb').style.background ="olivedrab";
+       document.getElementById('bb').style.backgroundImage ="";
         document.getElementById('r2').style.background="rgb(182, 180, 180)";
-      document.getElementById('d2').style.background="white";
-     // document.getElementById('bb').style.backgroundImage ="url(Biker-Motorcyclist-Traffic-Transportation-Ride-Mot-6407.jpg";
+      document.getElementById('d2').style.background="black";
 
-     //   document.getElementById('form-body').form-row.hide('rider');
-    //  document.getElementById('form-body').style.display='none'
-     
         }
 }
+
 </script>
-   </body> 
+
+<!-- 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+</body> 
    
    <script>
       $(function(){
         $("#nav-placeholder").load("navbar.html");
       });
-      </script>
+   </script>
+
 </html>

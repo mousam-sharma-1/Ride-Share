@@ -6,8 +6,6 @@
 }
 body {
     /* background-image:url("watermarked_cover.png"); */
-     
-     background: midnightblue; 
      /* background-repeat: no-repeat; */
      transition: all 1s ease-in-out;  
 }
@@ -47,14 +45,17 @@ body {
 }
 
 .form{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50% ,-45%);
+  
+    position: relative;
+    margin-left: 50%;
+    margin-top: 17%;
+    /* top: 50%;
+    left: 50%; */
+    /* transform: translate(-50% ,-45%); */
     width: 80%;
     height: 100%;
     max-width:600px;
-    max-height: 900px;
+    max-height: 700px;
     background:white;
     border-radius: 50px;
     box-sizing: border-box;
@@ -146,7 +147,9 @@ body {
     }
     .form  {
         width: 85%;
-        position: absolute;
+    position: relative;
+    margin-left: 50%;
+    margin-top: 63%;
         height: 885px;
         transform:  translate(-50% ,-30%);
     }
@@ -178,7 +181,6 @@ body {
           }
           .form  {
               width: 85%;
-              position: absolute;
               height: 875px;
               transform:  translate(-50% ,-30%);
           }
@@ -187,3 +189,15 @@ body {
                 margin-top: 0;
             }
         }
+
+
+        /*  ////////////////////////////////////////////////////////////////////////////////////////////// */
+
+.fo{
+    max-width: 100%;
+margin-left: 25px;
+margin-top: 10px;
+}
+.fields{
+    padding-top: 10px;
+}
