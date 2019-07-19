@@ -145,21 +145,20 @@ body {
       width: 90%;
       margin-top: 0;
     }
-        .img2{
-            position: absolute;
-            left: -4%;
-         }
+.img2{
+     position: absolute;
+     left: -20%;
+    }
     .form  {
         width: 85%;
     position: relative;
     margin-left: 50%;
-    margin-top: 55%;
-        height: 885px;
+    margin-top: 60%;
+        height: 700px;
         transform:  translate(-50% ,-30%);
     }
     .form .body .form-row .button_r, .form .body .form-row .button_d{
     margin-left: 85px;
-        margin-top: 0;
       }
   }
    @media screen and (min-width: 600px) {
