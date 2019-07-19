@@ -151,14 +151,14 @@ body {
     }
 .img2{
      position: absolute;
-     left: -12%;
+     left: -11%;
     }
     .form  {
         width: 85%;
     position: relative;
     margin-left: 50%;
     margin-top: 55%;
-        height: 700px;
+        height: 725px;
         transform:  translate(-50% ,-30%);
     }
     .form .body .form-row .button_r, .form .body .form-row .button_d{
