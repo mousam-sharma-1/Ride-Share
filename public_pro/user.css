@@ -145,15 +145,19 @@ body {
       width: 90%;
       margin-top: 0;
     }
+    .img{
+        position: absolute;
+     left: -5%;
+    }
 .img2{
      position: absolute;
-     left: -20%;
+     left: -12%;
     }
     .form  {
         width: 85%;
     position: relative;
     margin-left: 50%;
-    margin-top: 60%;
+    margin-top: 55%;
         height: 700px;
         transform:  translate(-50% ,-30%);
     }
@@ -192,11 +196,15 @@ body {
                 margin-left: 175px;
                 margin-top: 0;
             }
- .img2{
+        .img2{
     position: absolute;
    left:15%;
+            }
+            .img{
+                position: absolute;
+             left: 15%;
+            }
 }
-        }
 
 
         /*  ////////////////////////////////////////////////////////////////////////////////////////////// */
