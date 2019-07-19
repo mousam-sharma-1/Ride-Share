@@ -55,7 +55,7 @@ body {
     width: 80%;
     height: 100%;
     max-width:600px;
-    max-height: 700px;
+    max-height: 750px;
     background:white;
     border-radius: 50px;
     box-sizing: border-box;
@@ -149,7 +149,7 @@ body {
         width: 85%;
     position: relative;
     margin-left: 50%;
-    margin-top: 63%;
+    margin-top: 55%;
         height: 885px;
         transform:  translate(-50% ,-30%);
     }
@@ -172,6 +172,10 @@ body {
       .form .body .form-row .button_r, .form .body .form-row .button_d{
       margin-left: 150px;
           margin-top: 0;
+        }
+        .img2{
+            height: 25px;
+            margin-left:-70%;
         }
     }
     @media screen and (min-width: 800px) {
@@ -200,4 +204,7 @@ margin-top: 10px;
 }
 .fields{
     padding-top: 10px;
+}
+.img2{
+    margin-left:5%;
 }
