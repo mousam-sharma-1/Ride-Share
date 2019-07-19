@@ -5,10 +5,14 @@
   "main": "user.js",
   "dependencies": {
     "express": "^4.16.4",
-    "express-session": "^1.16.1",
+    "express-flash": "0.0.2",
+    "express-session": "^1.16.2",
+    "flash": "^1.1.0",
     "git": "^0.1.5",
     "mongodb": "^3.2.4",
-    "node-geocoder": "^3.23.0"
+    "node-geocoder": "^3.23.0",
+    "node-session": "^1.2.1",
+    "session": "^0.1.0"
   },
   "devDependencies": {},
   "scripts": {

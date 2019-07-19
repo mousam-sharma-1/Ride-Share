@@ -145,6 +145,10 @@ body {
       width: 90%;
       margin-top: 0;
     }
+        .img2{
+            position: absolute;
+            left: -4%;
+         }
     .form  {
         width: 85%;
     position: relative;
@@ -173,10 +177,7 @@ body {
       margin-left: 150px;
           margin-top: 0;
         }
-        .img2{
-            height: 25px;
-            margin-left:-70%;
-        }
+        
     }
     @media screen and (min-width: 800px) {
         .form .body .form-row input{
@@ -192,6 +193,10 @@ body {
                 margin-left: 175px;
                 margin-top: 0;
             }
+ .img2{
+    position: absolute;
+   left:15%;
+}
         }
 
 
@@ -204,7 +209,4 @@ margin-top: 10px;
 }
 .fields{
     padding-top: 10px;
-}
-.img2{
-    margin-left:5%;
 }

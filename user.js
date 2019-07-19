@@ -1,8 +1,16 @@
 var express = require('express')
 var app = express();
 var body_parser = require('body-parser');
+// var session= require('express-session');
 
+// app.use(require('express-flash')());
 app.use(express.static('public_pro'));
+// app.use(session({
+//   secret: "fd34s@!@dfa453f3DF#$D&W", 
+//   resave: false, 
+//   saveUninitialized: true, 
+//   cookie: { secure: true }
+// }));
 
 var urlEncodedParser = body_parser.urlencoded({extended:false});
 
@@ -73,7 +81,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
           throw err;
           if(result.length>0){
             console.log("USER ALREADY EXIST!!")
-            res.redirect("/reg");
+            res.send("<h1>Mobile Number Already Registered&nbsp<a href='/reg'>CLICK</a></h1>")
           }
           else{
         db.collection('t_user').insertOne({'name':qdata.name,'mobile_no':qdata.mobile_no,'gender':qdata.gender,'age':qdata.age,'work':qdata.work,'password':qdata.password}),function(err,Result){
@@ -86,7 +94,9 @@ app.post("/doregister",urlEncodedParser,function(req,res){
 });
 
     app.get("/log",function(req,res){
-      res.sendFile(__dirname+"/public_pro/login.html");
+    //  var pagedata={message:req.flash('message')}
+     // res.render(__dirname+"/public_pro/login.html",message);
+    res.sendFile(__dirname+"/public_pro/login.html");
     })
 
     app.get("/checkLogin",function(req,res){
@@ -107,7 +117,10 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                 res.redirect("/user");
                   }
                   else{
-                    res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
+                  // req.session('message','error');
+                  // req.flash('message','error')
+                  //res.redirect('/log');
+                     res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
                   }
                 })
               })
