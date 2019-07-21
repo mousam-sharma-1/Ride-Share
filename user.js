@@ -136,7 +136,7 @@ app.post("/doreg/rider",urlEncodedParser, function(req,res){
     console.log("rider");
     var q=req.body;
     console.log(q.mobile_no);
-    db.collection('travels').insertOne({'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'id_img':'','sor_address':'','des_address':''}),
+    db.collection('travels').insertOne({'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,Result){
     if(err)
@@ -151,9 +151,7 @@ app.post("/doreg/driver",urlEncodedParser, function(req,res){
     console.log("driver");
     var q=req.body;
     console.log(q);
-    db.collection('t_user').insertOne({'type':vt,'name':req.body.name_d,'mobile_no':req.body.mob,
-    'vehicle_no':req.body.vno,'vehicle_type':req.body.vtype,'vehicle_model':req.body.veh_m,
-    'licence':req.body.lic,'id_img':req.body.id}),
+    db.collection('travels').insertOne({'type':"driver",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     function(err,Result){
     if(err)
     throw err;
