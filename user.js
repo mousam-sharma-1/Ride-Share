@@ -136,7 +136,8 @@ app.post("/doreg/rider",urlEncodedParser, function(req,res){
     console.log("rider");
     var q=req.body;
     console.log(q.mobile_no);
-    db.collection('t_user').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':vt,'Date-time':req.body.date,'id_proof':req.body.idp,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
+    db.collection('travels').insertOne({'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':'','sor_address':'','des_address':''}),
+    // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,Result){
     if(err)
     throw err;
