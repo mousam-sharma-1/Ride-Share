@@ -157,15 +157,20 @@ res.sendFile(__dirname+"/public_pro/user_purana.html");
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
     console.log("rider");
     console.log(req.cookies.userData);
+var rad=Math.random().toString(36).substring(2, 8);
+console.log(rad);
+res.cookie('Rcode', rad, {maxAge:300000, httpOnly: true });
+
+
     // console.log(req.cookie.q);
     var q=req.body;
     console.log(q);
-    db.collection('travels').insertOne({'type':"rider",travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
-    function(err,Result){
+    function(err,res){
     if(err)
     throw err;
-    console.log('Result::'+Result);
+    console.log(res);
  
 }
 res.redirect("/map");
@@ -174,6 +179,7 @@ app.post("/doreg/driver",urlEncodedParser, function(req,res){
     console.log("driver");
     var q=req.body;
     console.log(q);
+    
     db.collection('travels').insertOne({'type':"driver",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     function(err,Result){
     if(err)
@@ -191,7 +197,7 @@ app.get("/map",function(req,res){
 app.post('/getMapInput',urlEncodedParser,(req,res)=>{
     var source = req.body.sor;
     var destinition = req.body.des;
-
+    console.log("randome code == "+req.cookies.Rcode);
   //   geocoder.geocode(source)
   // .then(function(response) {
     
@@ -218,7 +224,7 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
   //   console.log(err);
   // });
   console.log("now:::"+req.cookies.userData);
-  db.collection('travels').updateOne({'travelId':req.cookies.userData,'sor_address':"",'des_address':""},{$set:{"sor_address":"source1","des_address":"1destinition"}}),
+  db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode,'sor_address':"",'des_address':""},{$set:{"sor_address":"source1","des_address":"1destinition"}}),
   function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
   if(err)
   throw err;
