@@ -218,7 +218,7 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
   //   console.log(err);
   // });
   console.log("now:::"+req.cookies.userData);
-  db.collection('travels').updateOne({'travelId':req.cookies.userData},{$set:{"sor_address":"source1","des_address":"destinition"}}),
+  db.collection('travels').updateOne({'travelId':req.cookies.userData,'sor_address':"",'des_address':""},{$set:{"sor_address":"source1","des_address":"1destinition"}}),
   function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
   if(err)
   throw err;
