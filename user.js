@@ -1,6 +1,20 @@
-var express = require('express')
+var express = require('express');
 var app = express();
-var body_parser = require('body-parser');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+
+
+
+
+app.use(cookieParser());
+app.use(bodyParser());
+app.use(session({
+    secret: '2C44-4D44-WppQ38S',
+    resave: true,
+    saveUninitialized: true
+}));
+
 // var session= require('express-session');
 
 // app.use(require('express-flash')());
@@ -12,7 +26,7 @@ app.use(express.static('public_pro'));
 //   cookie: { secure: true }
 // }));
 
-var urlEncodedParser = body_parser.urlencoded({extended:false});
+var urlEncodedParser = bodyParser.urlencoded({extended:false});
 
 var mongodb = require('mongodb');
 var mongoClient = require('mongodb').MongoClient
@@ -117,7 +131,12 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                 var q=result[0]._id;
                 console.log("SUCESSFULL SIGN IN")
                 console.log("result _id ="+q);
-           
+                
+                res.cookie('userData', q, {maxAge:300000, httpOnly: true });
+            
+                console.log(req.cookies);
+               // res.clearCookie("newname");
+               
                 res.redirect("/user")
                   }
                   else{
@@ -137,9 +156,11 @@ res.sendFile(__dirname+"/public_pro/user_purana.html");
 
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
     console.log("rider");
+    console.log(req.cookies.userData);
+    // console.log(req.cookie.q);
     var q=req.body;
-    console.log(q.mobile_no);
-    db.collection('travels').insertOne({'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    console.log(q);
+    db.collection('travels').insertOne({'type':"rider",travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,Result){
     if(err)
@@ -171,33 +192,33 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
     var source = req.body.sor;
     var destinition = req.body.des;
 
-    geocoder.geocode(source)
-  .then(function(response) {
+  //   geocoder.geocode(source)
+  // .then(function(response) {
     
-    var sorc=response[0].formattedAddress;
-    console.log('Source:: '+sorc);
+  //   var sorc=response[0].formattedAddress;
+  //   console.log('Source:: '+sorc);
     
-    var sorc_lat=response[0].latitude;
-    console.log(sorc_lat);
+  //   var sorc_lat=response[0].latitude;
+  //   console.log(sorc_lat);
 
-   var sorc_lng=response[0].longitude;
-   console.log(sorc_lng);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
+  //  var sorc_lng=response[0].longitude;
+  //  console.log(sorc_lng);
+  // })
+  // .catch(function(err) {
+  //   console.log(err);
+  // });
 
-  geocoder.geocode(destinition)
-  .then(function(response) {
-    console.log('Destination:: '+response[0].formattedAddress);
-    console.log(response[0].latitude);
-    console.log(response[0].longitude);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
-  console.log("");
-  db.collection('travels').updateOne({"mobile_no":'2222444446',"Logs.type":'rider'},{$set:{"Logs.$.sor_address":source,"Logs.$.des_address":destinition}}),
+  // geocoder.geocode(destinition)
+  // .then(function(response) {
+  //   console.log('Destination:: '+response[0].formattedAddress);
+  //   console.log(response[0].latitude);
+  //   console.log(response[0].longitude);
+  // })
+  // .catch(function(err) {
+  //   console.log(err);
+  // });
+  console.log("now:::"+req.cookies.userData);
+  db.collection('travels').updateOne({'travelId':req.cookies.userData},{$set:{"sor_address":"source1","des_address":"destinition"}}),
   function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
   if(err)
   throw err;
