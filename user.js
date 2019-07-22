@@ -84,7 +84,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
             res.send("<h1>Mobile Number Already Registered&nbsp<a href='/reg'>CLICK</a></h1>")
           }
           else{
-        db.collection('t_user').insertOne({'name':qdata.name,'mobile_no':qdata.mobile_no,'gender':qdata.gender,'age':qdata.age,'work':qdata.work,'password':qdata.password}),function(err,Result){
+        db.collection('t_user').insertOne({name:qdata.name,mobile_no:qdata.mobile_no,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
         if(err)
         throw err;
         }
@@ -106,15 +106,19 @@ app.post("/doregister",urlEncodedParser,function(req,res){
       console.log("Mob. no. entered:: "+mob);
       console.log("password entered:: "+pass);
 
-        db.collection('t_user').find({'mobile_no':mob,'password':pass}).toArray(function(err,result){
+        db.collection('t_user').find({mobile_no:mob,password:pass}).toArray(function(err,result){
          
         if(err)
         throw err;
         if(result.length>0){
-                console.log(result+"===="+result.length);
+          // console.log(result[0]);
+                console.log(JSON.stringify(result)+"===="+result.length);
                 // console.log(typeof(result))
+                var q=result[0]._id;
                 console.log("SUCESSFULL SIGN IN")
-                res.redirect("/user");
+                console.log("result _id ="+q);
+           
+                res.redirect("/user")
                   }
                   else{
                   // req.session('message','error');
@@ -132,7 +136,6 @@ res.sendFile(__dirname+"/public_pro/user_purana.html");
 
 
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
-    var vt="rider";
     console.log("rider");
     var q=req.body;
     console.log(q.mobile_no);
@@ -147,7 +150,6 @@ app.post("/doreg/rider",urlEncodedParser, function(req,res){
 res.redirect("/map");
 })   
 app.post("/doreg/driver",urlEncodedParser, function(req,res){
-    var vt="driver";
     console.log("driver");
     var q=req.body;
     console.log(q);
@@ -194,7 +196,8 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
   .catch(function(err) {
     console.log(err);
   });
-  db.collection('t_user').updateOne({"mobile_no":'2222444446',"Logs.type":'rider'},{$set:{"Logs.$.sor_address":source,"Logs.$.des_address":destinition}}),
+  console.log("");
+  db.collection('travels').updateOne({"mobile_no":'2222444446',"Logs.type":'rider'},{$set:{"Logs.$.sor_address":source,"Logs.$.des_address":destinition}}),
   function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
   if(err)
   throw err;
