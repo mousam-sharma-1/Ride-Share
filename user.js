@@ -47,7 +47,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
      
       // Optional depending on the providers
       httpAdapter: 'https', // Default
-      apiKey: 'AIzaSyAY2WSt2Tjw5FYiIADZvtRmzvjWjC1T2IY', // billing enabled key
+      apiKey: 'AIzaSyDu-O2F3kvwNiBjPQGuScZBpzhXyBk50S8', // billing enabled key(Akash sir ziasy)
       //apiKey: 'AIzaSyAnE8izq7BaeFr_HkCUyb3L99NCFM2rQRo', //Mousam
       formatter: null         // 'gpx', 'string', ...
     };
@@ -177,14 +177,19 @@ res.redirect("/map");
 })   
 app.post("/doreg/driver",urlEncodedParser, function(req,res){
     console.log("driver");
+    console.log(req.cookies.userData);
+    var rad=Math.random().toString(36).substring(2, 8);
+    console.log(rad);
+    res.cookie('Rcode', rad, {maxAge:300000, httpOnly: true });
+    
     var q=req.body;
     console.log(q);
     
-    db.collection('travels').insertOne({'type':"driver",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
-    function(err,Result){
+    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    function(err,res){
     if(err)
     throw err;
-    console.log('Result::'+Result);
+    console.log(res);
  
 }
 res.redirect("/map");
@@ -216,7 +221,8 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
 
   // geocoder.geocode(destinition)
   // .then(function(response) {
-  //   console.log('Destination:: '+response[0].formattedAddress);
+  //   var desc=response[0].formattedAddress;
+  //   console.log('Destination:: '+desc);
   //   console.log(response[0].latitude);
   //   console.log(response[0].longitude);
   // })
@@ -224,7 +230,7 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
   //   console.log(err);
   // });
   console.log("now:::"+req.cookies.userData);
-  db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode,'sor_address':"",'des_address':""},{$set:{"sor_address":"source1","des_address":"1destinition"}}),
+  db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode,'sor_address':"",'des_address':""},{$set:{"sor_address":"sorc","des_address":"desc"}}),
   function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
   if(err)
   throw err;
