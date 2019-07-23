@@ -185,7 +185,7 @@ app.post("/doreg/driver",urlEncodedParser, function(req,res){
     var q=req.body;
     console.log(q);
     
-    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:"ObjectId('"+req.cookies.userData+"')",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     function(err,res){
     if(err)
     throw err;
