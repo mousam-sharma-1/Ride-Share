@@ -47,7 +47,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
      
       // Optional depending on the providers
       httpAdapter: 'https', // Default
-      apiKey: 'AIzaSyAIKBwIgz6GFw5m2NM4vE9Om84P2hUXnf8', // billing enabled key(Akash sir ziasy)
+      apiKey: 'AIzaSyAIKBwIgz6GFw5m2NM4vE9Om84P2hUXnf8', // billing enabled key(Ankit sir Stoway)
 
       //apiKey: 'AIzaSyDu-O2F3kvwNiBjPQGuScZBpzhXyBk50S8', // billing enabled key(Akash sir ziasy)
       //apiKey: 'AIzaSyAnE8izq7BaeFr_HkCUyb3L99NCFM2rQRo', //Mousam
@@ -134,7 +134,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                 console.log("SUCESSFULL SIGN IN")
                 console.log("result _id ="+q);
                 
-                res.cookie('userData', q, {maxAge:300000, httpOnly: true });
+                res.cookie('userData', q, {maxAge:600000000, httpOnly: true});
             
                 console.log(req.cookies);
                // res.clearCookie("newname");
@@ -161,7 +161,7 @@ app.post("/doreg/rider",urlEncodedParser, function(req,res){
     console.log(req.cookies.userData);
 var rad=Math.random().toString(36).substring(2, 8);
 console.log(rad);
-res.cookie('Rcode', rad, {maxAge:300000, httpOnly: true });
+res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true});
 
 
     // console.log(req.cookie.q);
@@ -182,7 +182,7 @@ app.post("/doreg/driver",urlEncodedParser, function(req,res){
     console.log(req.cookies.userData);
     var rad=Math.random().toString(36).substring(2, 8);
     console.log(rad);
-    res.cookie('Rcode', rad, {maxAge:300000, httpOnly: true });
+    res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true });
     
     var q=req.body;
     console.log(q);
@@ -213,24 +213,25 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
     console.log("randome code == "+req.cookies.Rcode);
   console.log("now:::"+"ObjectId('"+req.cookies.userData+"')");
 
-    geocoder.geocode(source).then(function(response) {
+    geocoder.geocode(source)
+    .then(function(response) {
     
     sorc=response[0].formattedAddress;
   console.log('Source:: '+sorc);
-    
     
      sorc_lat=response[0].latitude;
     console.log(sorc_lat);
 
    sorc_lng=response[0].longitude;
    console.log(sorc_lng);
-
   })
   .catch(function(err) {
     console.log(err);
   });
 
-  geocoder.geocode(destinition).then(function(response) {
+  geocoder.geocode(destinition)
+  .then(function(response) {
+
     desc=response[0].formattedAddress;
   console.log('Destination:: '+desc);
   
@@ -253,7 +254,7 @@ function(err,Result){          //'lat':source.response[0].latitude,'lng':source.
 if(err)
 throw err;
 }
-},1000);
+},5000);
   }
   getValue();
   
