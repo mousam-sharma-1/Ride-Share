@@ -47,7 +47,9 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
      
       // Optional depending on the providers
       httpAdapter: 'https', // Default
-      apiKey: 'AIzaSyDu-O2F3kvwNiBjPQGuScZBpzhXyBk50S8', // billing enabled key(Akash sir ziasy)
+      apiKey: 'AIzaSyAIKBwIgz6GFw5m2NM4vE9Om84P2hUXnf8', // billing enabled key(Akash sir ziasy)
+
+      //apiKey: 'AIzaSyDu-O2F3kvwNiBjPQGuScZBpzhXyBk50S8', // billing enabled key(Akash sir ziasy)
       //apiKey: 'AIzaSyAnE8izq7BaeFr_HkCUyb3L99NCFM2rQRo', //Mousam
       formatter: null         // 'gpx', 'string', ...
     };
@@ -165,7 +167,7 @@ res.cookie('Rcode', rad, {maxAge:300000, httpOnly: true });
     // console.log(req.cookie.q);
     var q=req.body;
     console.log(q);
-    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:"ObjectId('"+req.cookies.userData+"')",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,res){
     if(err)
@@ -200,43 +202,65 @@ app.get("/map",function(req,res){
 
 });
 app.post('/getMapInput',urlEncodedParser,(req,res)=>{
-    var source = req.body.sor;
+  var sorc; 
+  var sorc_lat;
+  var sorc_lng;
+  var desc; 
+  var desc_lat;
+  var desc_lng;
+  var source = req.body.sor;
     var destinition = req.body.des;
     console.log("randome code == "+req.cookies.Rcode);
-  //   geocoder.geocode(source)
-  // .then(function(response) {
-    
-  //   var sorc=response[0].formattedAddress;
-  //   console.log('Source:: '+sorc);
-    
-  //   var sorc_lat=response[0].latitude;
-  //   console.log(sorc_lat);
+  console.log("now:::"+"ObjectId('"+req.cookies.userData+"')");
 
-  //  var sorc_lng=response[0].longitude;
-  //  console.log(sorc_lng);
-  // })
-  // .catch(function(err) {
-  //   console.log(err);
-  // });
+    geocoder.geocode(source).then(function(response) {
+    
+    sorc=response[0].formattedAddress;
+  console.log('Source:: '+sorc);
+    
+    
+     sorc_lat=response[0].latitude;
+    console.log(sorc_lat);
 
-  // geocoder.geocode(destinition)
-  // .then(function(response) {
-  //   var desc=response[0].formattedAddress;
-  //   console.log('Destination:: '+desc);
-  //   console.log(response[0].latitude);
-  //   console.log(response[0].longitude);
-  // })
-  // .catch(function(err) {
-  //   console.log(err);
-  // });
-  console.log("now:::"+req.cookies.userData);
-  db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode,'sor_address':"",'des_address':""},{$set:{"sor_address":"sorc","des_address":"desc"}}),
-  function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
-  if(err)
-  throw err;
-  console.log('Result::'+Result);
+   sorc_lng=response[0].longitude;
+   console.log(sorc_lng);
+
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+
+  geocoder.geocode(destinition).then(function(response) {
+    desc=response[0].formattedAddress;
+  console.log('Destination:: '+desc);
+  
+  desc_lat=response[0].latitude;
+    console.log(response[0].latitude);
+  
+  desc_lng=response[0].longitude;
+    console.log(response[0].longitude);
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+  function getValue() {
+setTimeout(()=> {
+console.log('source outside:: '+sorc);
+console.log('Destination outside:: '+desc);
+
+db.collection('travels').updateOne({'travelId':"ObjectId('"+req.cookies.userData+"')",'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng]}}),
+function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
+if(err)
+throw err;
+}
+},1000);
   }
-    res.redirect('/map');
+  getValue();
+  
+
+   res.redirect('/map');
+ 
+
 });   
 
 app.listen(process.env.PORT || 3000,function(){
