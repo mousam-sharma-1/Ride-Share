@@ -134,7 +134,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                 console.log("SUCESSFULL SIGN IN")
                 console.log("result _id ="+q);
                 
-                res.cookie('userData', q, {maxAge:600000000, httpOnly: true});
+                res.cookie('userData',"ObjectId('"+q+"')", {maxAge:600000000, httpOnly: true});
             
                 console.log(req.cookies);
                // res.clearCookie("newname");
@@ -159,7 +159,7 @@ res.sendFile(__dirname+"/public_pro/user_purana.html");
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
     console.log("rider");
     console.log(req.cookies.userData);
-var rad=Math.random().toString(36).substring(2, 8);
+var rad="Ri_"+Math.random().toString(36).substring(2, 8);
 console.log(rad);
 res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true});
 
@@ -167,7 +167,7 @@ res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true});
     // console.log(req.cookie.q);
     var q=req.body;
     console.log(q);
-    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:"ObjectId('"+req.cookies.userData+"')",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,res){
     if(err)
@@ -180,14 +180,14 @@ res.redirect("/map");
 app.post("/doreg/driver",urlEncodedParser, function(req,res){
     console.log("driver");
     console.log(req.cookies.userData);
-    var rad=Math.random().toString(36).substring(2, 8);
+    var rad="Dr_"+Math.random().toString(36).substring(2, 8);
     console.log(rad);
     res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true });
     
     var q=req.body;
     console.log(q);
     
-    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:"ObjectId('"+req.cookies.userData+"')",'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
     function(err,res){
     if(err)
     throw err;
@@ -211,7 +211,7 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
   var source = req.body.sor;
     var destinition = req.body.des;
     console.log("randome code == "+req.cookies.Rcode);
-  console.log("now:::"+"ObjectId('"+req.cookies.userData+"')");
+  console.log("now:::"+req.cookies.userData);
 
     geocoder.geocode(source)
     .then(function(response) {
@@ -248,8 +248,8 @@ app.post('/getMapInput',urlEncodedParser,(req,res)=>{
 setTimeout(()=> {
 console.log('source outside:: '+sorc);
 console.log('Destination outside:: '+desc);
-
-db.collection('travels').updateOne({'travelId':"ObjectId('"+req.cookies.userData+"')",'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng]}}),
+console.log("CODE=="+req.cookies.Rcode);
+db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng]}}),
 function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
 if(err)
 throw err;
@@ -258,6 +258,7 @@ throw err;
   }
   getValue();
   
+
 
    res.redirect('/map');
  
