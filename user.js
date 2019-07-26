@@ -12,8 +12,8 @@ app.use(cookieParser());
 app.use(bodyParser());
 app.use(session({
     secret: '2C44-4D44-WppQ38S',
-    
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false
 }));
 
 // var session= require('express-session');
