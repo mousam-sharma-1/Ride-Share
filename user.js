@@ -198,7 +198,7 @@ app.get("/history",backdoor,function(req,res){
     if(err)
     throw err;
     console.log(req.cookies.userData);
-    console.log("Great!!"+result.length);
+    console.log("Great!!"+JSON.stringify(result));
     res.render('content',{'name':req.session.fullname,'data':result}); 
   })
 })
@@ -249,7 +249,7 @@ res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true});
     // console.log(req.cookie.q);
     var q=req.body;
     console.log(q);
-    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"rider",code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match_id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,res){
     if(err)
@@ -269,7 +269,7 @@ app.post("/doreg/driver",backdoor,urlEncodedParser, function(req,res){
     var q=req.body;
     console.log(q);
     
-    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:req.cookies.userData,'vehicle type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match id':''}),
+    db.collection('travels').insertOne({'type':"driver",code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'Date-time':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match_id':''}),
     function(err,res){
     if(err)
     throw err;
