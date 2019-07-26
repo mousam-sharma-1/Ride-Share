@@ -202,6 +202,14 @@ app.get("/history",backdoor,function(req,res){
 })
 
 
+app.get("/logout",function(req,res){
+
+  req.session.destroy();
+
+  res.redirect("");
+})
+
+
 
 function backdoor(req,res,next){
         
