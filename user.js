@@ -140,8 +140,18 @@ app.post("/doregister",urlEncodedParser,function(req,res){
               
           //       console.log("JWT++++++++++"+data)}
           //   });
-          
+          var data=result[0];
           // console.log(result[0]);
+
+          req.session.fullname=data.name;
+
+          req.session.is_user_logged_in=true;
+
+          console.log("session="+req.session.fullname+"=="+req.session.is_user_logged_in);
+
+
+
+
                 console.log(JSON.stringify(result)+"===="+result.length);
                 
                 var q=result[0]._id;
@@ -180,23 +190,43 @@ app.post("/doregister",urlEncodedParser,function(req,res){
               // });
 
 
-app.get("/history",function(req,res){
+app.get("/history",backdoor,function(req,res){
 
-  db.collection('t_user').find({mobile_no:mob,password:pass}).toArray(function(err,result){
+  db.collection('travels').find({'travelId':req.cookies.userData}).toArray(function(err,result){
+    if(err)
+    throw err;
+    console.log(req.cookies.userData);
+    console.log("Great!!"+result.length);
+    res.send(JSON.stringify(result));
   })
 })
 
 
 
+function backdoor(req,res,next){
+        
+  if(!req.session.is_user_logged_in)
+  {
+    res.redirect("/log");
+  }
+
+  next();
+
+}
 
 
 
- app.get("/user",function(req,res){
+
+
+
+
+ app.get("/user",backdoor,function(req,res){
+
  res.sendFile(__dirname+"/public_pro/user_purana.html"); 
  });
 
 
-app.post("/doreg/rider",urlEncodedParser, function(req,res){
+app.post("/doreg/rider",backdoor,urlEncodedParser, function(req,res){
     console.log("rider");
     console.log(req.cookies.userData);
 var rad="Ri_"+Math.random().toString(36).substring(2, 8);
@@ -217,7 +247,7 @@ res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true});
 }
 res.redirect("/map");
 })   
-app.post("/doreg/driver",urlEncodedParser, function(req,res){
+app.post("/doreg/driver",backdoor,urlEncodedParser, function(req,res){
     console.log("driver");
     console.log(req.cookies.userData);
     var rad="Dr_"+Math.random().toString(36).substring(2, 8);
@@ -236,12 +266,12 @@ app.post("/doreg/driver",urlEncodedParser, function(req,res){
 }
 res.redirect("/map");
 })
-app.get("/map",function(req,res){
+app.get("/map",backdoor,function(req,res){
 
     res.sendFile(__dirname+"/public_pro/map.html"); 
 
 });
-app.post('/getMapInput',urlEncodedParser,(req,res)=>{
+app.post('/getMapInput',backdoor,urlEncodedParser,(req,res)=>{
   var sorc; 
   var sorc_lat;
   var sorc_lng;
