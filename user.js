@@ -12,8 +12,8 @@ app.use(cookieParser());
 app.use(bodyParser());
 app.use(session({
     secret: '2C44-4D44-WppQ38S',
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true
 }));
 
 // var session= require('express-session');
@@ -206,7 +206,7 @@ app.get("/logout",function(req,res){
 
   req.session.destroy();
 
-  res.redirect("");
+  res.redirect("/user");
 })
 
 
@@ -235,6 +235,8 @@ function backdoor(req,res,next){
 
 
 app.post("/doreg/rider",backdoor,urlEncodedParser, function(req,res){
+  console.log("session2="+req.session.fullname+"=="+req.session.is_user_logged_in);
+
     console.log("rider");
     console.log(req.cookies.userData);
 var rad="Ri_"+Math.random().toString(36).substring(2, 8);
