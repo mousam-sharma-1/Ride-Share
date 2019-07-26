@@ -3,10 +3,11 @@ var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var ejs=require('ejs');
 //var jwt=require('jsonwebtoken');
 var router=express.Router();
 //var verifytoken=require("./helper/verifytoken");
-
+app.set('view engine','ejs');
 
 app.use(cookieParser());
 app.use(bodyParser());
