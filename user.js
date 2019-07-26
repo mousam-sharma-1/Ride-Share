@@ -199,7 +199,7 @@ app.get("/history",backdoor,function(req,res){
     throw err;
     console.log(req.cookies.userData);
     console.log("Great!!"+result.length);
-    res.render('content',{'name':req.session.fullname,'data':JSON.stringify(result[0])}); 
+    res.render('content',{'name':req.session.fullname,'data':result}); 
   })
 })
 
