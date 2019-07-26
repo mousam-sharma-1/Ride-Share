@@ -21,6 +21,7 @@ app.use(session({
 
 // app.use(require('express-flash')());
 app.use(express.static('public_pro'));
+//app.use(express.static('views'));
 // app.use(session({
 //   secret: "fd34s@!@dfa453f3DF#$D&W", 
 //   resave: false, 
@@ -65,7 +66,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     })
 
     app.get("/blog",function(req,res){
-      res.sendFile(__dirname+"/public_pro/content.ejs"); 
+      res.render('content',{'name':'MOUSAM'}); 
     })
 
     app.get("/about",function(req,res){
@@ -198,7 +199,7 @@ app.get("/history",backdoor,function(req,res){
     throw err;
     console.log(req.cookies.userData);
     console.log("Great!!"+result.length);
-    res.send(JSON.stringify(result));
+    res.render('content',{'name':req.session.fullname,'data':JSON.stringify(result[0])}); 
   })
 })
 
