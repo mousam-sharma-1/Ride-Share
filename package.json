@@ -11,6 +11,7 @@
     "express-session": "^1.16.2",
     "flash": "^1.1.0",
     "git": "^0.1.5",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.4",
     "node-geocoder": "^3.23.0",
     "node-session": "^1.2.1",

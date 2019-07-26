@@ -3,8 +3,9 @@ var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-
-
+//var jwt=require('jsonwebtoken');
+var router=express.Router();
+//var verifytoken=require("./helper/verifytoken");
 
 
 app.use(cookieParser());
@@ -29,7 +30,7 @@ app.use(express.static('public_pro'));
 var urlEncodedParser = bodyParser.urlencoded({extended:false});
 
 var mongodb = require('mongodb');
-var mongoClient = require('mongodb').MongoClient
+var mongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://Mousam:mousam1399@ridesharecluster-28swm.mongodb.net/test?retryWrites=true&w=majority";
 
 
@@ -123,20 +124,34 @@ app.post("/doregister",urlEncodedParser,function(req,res){
       console.log("password entered:: "+pass);
 
         db.collection('t_user').find({mobile_no:mob,password:pass}).toArray(function(err,result){
-         
-        if(err)
-        throw err;
+          //var data={ };
         if(result.length>0){
+////////////////////////////JSON WEB TOKEN//////////////////////////////////////////////////
+          // jwt.sign({user:"abhi"},"suab",(err,token)=>{
+          //   console.log("hello");
+          //   if(err){
+          //     console.log(err)
+          //       res.status(400).json("err");
+          //     }
+          //   else{
+          //     var token="Bearer"+" "+token;
+          //     data.token=token;
+          //     console.log(data.token);
+              
+          //       console.log("JWT++++++++++"+data)}
+          //   });
+          
           // console.log(result[0]);
                 console.log(JSON.stringify(result)+"===="+result.length);
-                // console.log(typeof(result))
+                
                 var q=result[0]._id;
                 console.log("SUCESSFULL SIGN IN")
                 console.log("result _id ="+q);
                 
-                res.cookie('userData',"ObjectId('"+q+"')", {maxAge:600000000, httpOnly: true});
+                res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
+                res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
             
-                console.log(req.cookies);
+                // console.log(req.cookies);
                // res.clearCookie("newname");
                
                 res.redirect("/user")
@@ -151,9 +166,30 @@ app.post("/doregister",urlEncodedParser,function(req,res){
               })
 
 
-app.get("/user",function(req,res){
-res.sendFile(__dirname+"/public_pro/user_purana.html"); 
-});
+              // app.get("/user", verifytoken.verifyToken,function(req,res){
+              //   jwt.verify(req.token,'suab',(err,authdata)=>{
+              //     if(authdata){
+              //       res.sendFile(__dirname+"/public_pro/user_purana.html");
+              //     }
+              //     else{
+              //       res.status(400).json("no kkk token given")
+              //     }
+              //   });
+              
+                
+              // });
+
+
+
+
+
+
+
+
+
+ app.get("/user",function(req,res){
+ res.sendFile(__dirname+"/public_pro/user_purana.html"); 
+ });
 
 
 app.post("/doreg/rider",urlEncodedParser, function(req,res){
@@ -254,6 +290,10 @@ function(err,Result){          //'lat':source.response[0].latitude,'lng':source.
 if(err)
 throw err;
 }
+
+
+
+
 },5000);
   }
   getValue();
@@ -272,3 +312,4 @@ app.listen(process.env.PORT || 3000,function(){
 console.log("Error :"+error);
 process.exit();
 })
+module.exports=router;
