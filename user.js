@@ -180,7 +180,11 @@ app.post("/doregister",urlEncodedParser,function(req,res){
               // });
 
 
+app.get("/history",function(req,res){
 
+  db.collection('t_user').find({mobile_no:mob,password:pass}).toArray(function(err,result){
+  })
+})
 
 
 
