@@ -198,7 +198,6 @@ app.get("/history",backdoor,function(req,res){
     if(err)
     throw err;
     console.log(req.cookies.userData);
-    console.log("Great!!"+JSON.stringify(result));
     res.render('content',{'name':req.session.fullname,'data':result}); 
   })
 })
