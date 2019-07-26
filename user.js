@@ -192,7 +192,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
 
 app.get("/history",backdoor,function(req,res){
 
-  db.collection('travels').find({'travelId':req.cookies.userData}).toArray(function(err,result){
+  db.collection('travels').find({'travelId':req.cookies.userData,'sor_address' : { $ne: "" } }).toArray(function(err,result){
     if(err)
     throw err;
     console.log(req.cookies.userData);
