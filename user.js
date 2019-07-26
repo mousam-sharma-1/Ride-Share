@@ -64,7 +64,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     })
 
     app.get("/blog",function(req,res){
-      res.sendFile(__dirname+"/public_pro/blog.html"); 
+      res.sendFile(__dirname+"/public_pro/content.ejs"); 
     })
 
     app.get("/about",function(req,res){
