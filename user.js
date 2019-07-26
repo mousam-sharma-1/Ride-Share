@@ -12,7 +12,7 @@ app.use(cookieParser());
 app.use(bodyParser());
 app.use(session({
     secret: '2C44-4D44-WppQ38S',
-    resave: true,
+    
     saveUninitialized: true
 }));
 
@@ -60,7 +60,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     
 
     app.get("",function(req,res){
-      res.sendFile(__dirname+"/public_pro/login.html");
+      res.redirect("/user");
     })
 
     app.get("/blog",function(req,res){
