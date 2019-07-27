@@ -182,10 +182,6 @@ app.post("/doregister",urlEncodedParser,function(req,res){
               })
       
 
-              // app.get("/pop",function(req,res){
-                
-              // })
-
 
               // app.get("/user", verifytoken.verifyToken,function(req,res){
               //   jwt.verify(req.token,'suab',(err,authdata)=>{
