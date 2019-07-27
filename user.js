@@ -99,8 +99,9 @@ app.post("/doregister",urlEncodedParser,function(req,res){
           if(err)
           throw err;
           if(result.length>0){
-            console.log("USER ALREADY EXIST!!")
-            res.send("<h1>Mobile Number Already Registered&nbsp<a href='/reg'>CLICK</a></h1>")
+            console.log("USER ALREADY EXIST!!");
+            alert("Mobile Number Already Registered!")
+           // res.send("<h1>Mobile Number Already Registered&nbsp<a href='/reg'>CLICK</a></h1>")
           }
           else{
         db.collection('t_user').insertOne({name:qdata.name,mobile_no:qdata.mobile_no,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
@@ -172,7 +173,8 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                   // req.session('message','error');
                   // req.flash('message','error')
                   //res.redirect('/log');
-                     res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
+                  alert("User NOT Registered!");
+                   //  res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>")
                   }
                 })
               })
