@@ -75,11 +75,11 @@
   <h3><%=name%></h3>
   <div class="table-responsive">
   <table class="table">
-      <tr><td>Type</td> <td>Vehicle Type</td> <td>Seats</td>
+      <!-- <tr><td>Type</td> <td>Vehicle Type</td> <td>Seats</td> -->
         <!-- <td><h2>Source Address</h2></td><td><h2>Destination Address</h2></td> -->
   <% data.forEach(function(p){ %>
-    <tr><td><%=p.type%></td><td><%=p.vehicle_type%></td> <td><%=p.Seat%></td> 
-      <!-- <td><%=p.sor_address%></td> <td><%=p.des_address%></td> -->
+    <tr><td><%=p.type%></td><td><%=p.Date-time%></td> <td><%=p.Seat%>Seats</td> 
+      <tr> <td><%=p.sor_address%></td> <td><%=p.des_address%></td> </tr>
 </tr>
     <% }) %>
 </table>
