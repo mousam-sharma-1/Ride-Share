@@ -173,7 +173,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                   // req.session('message','error');
                   // req.flash('message','error')
                   //res.redirect('/log');
-                  alert("User NOT Registered!")
+                  // alert("User NOT Registered!")
                     res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>");
                   }
                 })
