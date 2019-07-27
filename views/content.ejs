@@ -13,6 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 <style>
@@ -76,18 +77,18 @@ box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2);
     <hr><hr>
 </body>
 <body>
-  <h3 style="margin-left: 1%"><%=name%></h3><br>
+  <h4 style="margin-left: 1%; color: rgb(85, 86, 87)"><%=name%></h4><br>
   <div class="table-responsive">
   
       <!-- <tr><td>Type</td> <td>Vehicle Type</td> <td>Seats</td> -->
         <!-- <td><h2>Source Address</h2></td><td><h2>Destination Address</h2></td> -->
   <% data.forEach(function(p){ %>
-    <div style="box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2); border: 1px solid black; max-width: 750px; margin-left: 1%;margin-right: 1%">
+    <div style="box-shadow: 0 8px 8px 0 rgba(65, 63, 63, 0.2); border: 1px solid rgb(139, 138, 138);border-radius: 12px; max-width: 950px; margin-left: 1%;margin-right: 1%; overflow: hidden;">
       <table>
-      <tr><td><%=p.type%></td><td><%=p.Seat%>Seats</td></tr>
-      <tr><td><%=p.sor_address%></td></tr>
-      <td></td>
-      <tr><td style="width: 100%"><%=p.des_address%></td></tr>
+      <tr style="background-color: rgb(219, 213, 213)"><td><%=p.type%></td><td><%=p.Seat%>Seat&nbsp</td></tr>
+      <tr><td><i class="fa fa-dot-circle-o" style="font-size:18px; color: blue; margin-right: 1%; padding-left: 0.5%"></i><%=p.sor_address%></td></tr>
+      <td><i class="fa fa-ellipsis-v" style="font-size:18px; color: rgb(148, 146, 146); margin-right: 1%;  padding-left: 1%"></i><br></td>
+      <tr><td style="width: 100%"><i class="fa fa-map-marker" style="font-size:18px; color: red; margin-right: 1%;  padding-left: 0.5%"></i><%=p.des_address%></td></tr>
     </table>
   </div><br>
     <% }) %>
