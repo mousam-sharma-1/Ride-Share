@@ -66,7 +66,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     })
 
     app.get("/blog",function(req,res){
-      res.render('content',{'name':'MOUSAM'}); 
+      res.sendFile(__dirname+"/public_pro/blog.html")
     })
 
     app.get("/about",function(req,res){
@@ -86,7 +86,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
         });
 
 app.get("/reg",function(req,res){
-        res.sendFile(__dirname+"/public_pro/signup.html");
+        res.render("signup",{"message":null});
     });
 app.post("/doregister",urlEncodedParser,function(req,res){ 
         var qdata=req.body;                          
@@ -100,7 +100,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
           throw err;
           if(result.length>0){
             console.log("USER ALREADY EXIST!!");
-            alert("Mobile Number Already Registered!")
+           res.render("signup",{"message":"Mobile Number Already Registered!"});
            // res.send("<h1>Mobile Number Already Registered&nbsp<a href='/reg'>CLICK</a></h1>")
           }
           else{
@@ -115,8 +115,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
 
     app.get("/log",function(req,res){
     //  var pagedata={message:req.flash('message')}
-     // res.render(__dirname+"/public_pro/login.html",message);
-    res.sendFile(__dirname+"/public_pro/login.html");
+    res.render("login",{'message':null});
     })
 
     app.get("/checkLogin",function(req,res){
@@ -174,10 +173,18 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                   // req.flash('message','error')
                   //res.redirect('/log');
                   // alert("User NOT Registered!")
-                    res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>");
+                  // document.write("alert('Mobile Number Already Registered!')");
+                  // res.redirect("/log");
+                  res.render("login",{'message':'User NOT Registered!'});
+                  //res.send("<h1>NOT Registered<h1>FOR REGISTRATION<a href='/reg'>CLICK</a>");
                   }
                 })
               })
+      
+
+              // app.get("/pop",function(req,res){
+                
+              // })
 
 
               // app.get("/user", verifytoken.verifyToken,function(req,res){
