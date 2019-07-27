@@ -89,8 +89,9 @@
     <center><span ng-show="myForm.password.$touched && myForm.password.$invalid" style="color: red">*The Password is required.</span></center>
 <br>
       <center>  <input class = "btn btn-success" ng-disabled="myForm.mobile.$dirty && myForm.mobile.$invalid ||  
-        myForm.password.$dirty && myForm.password.$invalid" type="submit" value="LOGIN"></center><center><div style="color: red"><%=message%></div></center>
-
+        myForm.password.$dirty && myForm.password.$invalid" type="submit" value="LOGIN"></center>
+        <center><div style="color: red"><%=message%></div></center>
+<br>
       <p  style="font-style: italic">New here ? <a href="/reg" class="btn btn-link">Sign In</a>
       </p>
     </div>
