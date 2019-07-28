@@ -4,11 +4,11 @@
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="css/animate.css">
     <script src="js/wow.min.js"></script>
-    
+    <script>
+    new WOW().init();
+    </script>
 </head>
-<script>
-        new WOW().init();
-</script>
+       
 <body>
     <!--Navigation bar-->
 <div id="nav-placeholder"></div>
@@ -18,11 +18,12 @@
 
    <h3><i>Nothing here, buddy!</i></h3> 
     
-    <!--end of Navigation bar-->
 </body>
 <script>
         $(function(){
           $("#nav-placeholder").load("navbar.html");
         });
+
+        
         </script>
 </html>
