@@ -3,6 +3,7 @@ var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+const Nexmo = require('nexmo');
 var ejs=require('ejs');
 //var jwt=require('jsonwebtoken');
 var router=express.Router();
@@ -17,7 +18,19 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// var session= require('express-session');
+
+
+const nexmo = new Nexmo({
+  apiKey: 'be76a80b',
+  apiSecret: 'k7NeXeb3ExKvsmAR',
+});
+
+
+
+
+
+
+
 
 // app.use(require('express-flash')());
 app.use(express.static('public_pro'));
@@ -78,7 +91,9 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     })
 
 
-
+app.get('/otp',function(req,res){
+  res.render("otp",{"message":null});
+})
 
 
     app.get('/user.css',function(req,res){
@@ -90,28 +105,80 @@ app.get("/reg",function(req,res){
     });
 app.post("/doregister",urlEncodedParser,function(req,res){ 
         var qdata=req.body;                          
+        var random=Math.floor(Math.random() *9000)+1000;
+        var mobilenumber="91"+qdata.mobile_no;
+        qdata.otp=random.toString();
         
-        // var qdata=q.query; 
-      
-    console.log(qdata.mobile_no);
+
+        var q=mongodb.ObjectId();
+        console.log("SUCESSFULL SIGN up")
+        console.log("result _id ="+q);
+        
+        res.cookie('userData',q, {maxAge:600000000, httpOnly: true});
+        res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
+
+
+        req.session.mob=mobilenumber;
+        req.session.fullname=qdata.name;
+        req.session.is_user_logged_in=true;
+
+    console.log(mobilenumber);
         console.log("password =>"+qdata.password);
         db.collection('t_user').find({'mobile_no':qdata.mobile_no}).toArray(function(err,result){
           if(err)
           throw err;
+
           if(result.length>0){
             console.log("USER ALREADY EXIST!!");
            res.render("signup",{"message":"Mobile Number Already Registered!"});
-           // res.send("<h1>Mobile Number Already Registered&nbsp<a href='/reg'>CLICK</a></h1>")
           }
           else{
-        db.collection('t_user').insertOne({name:qdata.name,mobile_no:qdata.mobile_no,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
+const from = 'Nexmo';
+const to = '919893333745';
+const text = random;
+
+nexmo.message.sendSms(from, to, text,(err, responseData) => {
+              if (err) {
+               console.log("hello err");
+             } else {
+       console.log(responseData);
+        db.collection('t_user').insertOne({name:qdata.name,mobile_no:mobilenumber,otp:qdata.otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
         if(err)
-        throw err;
-        }
-      res.redirect("/log");
+        throw err;        
+      }
+console.log("aage...")
+      }
+      })
+      res.redirect("/otp");
     }
   })
 });
+
+app.get('/checkOtp',backdoor,function(req,res){
+console.log("entered..."+req.session.mob);
+console.log(req.query.otp);
+  db.collection('t_user').find({mobile_no:req.session.mob}).toArray(function(err,result){
+    var data=result[0];
+    console.log(result.length);
+    console.log(JSON.stringify(result[0]));
+    console.log(result[0].otp);
+    console.log("req.body.otp"+req.query.otp);
+    console.log("result.otp"+data.otp);
+  
+      // console.log(result)
+      if(req.query.otp==data.otp){
+          
+            console.log("otpsuccess");
+            res.redirect("/user");
+      }else{
+     	   console.log("otp not match");
+     	  res.render("otp",{"message":"Wrong OTP!"});
+       }
+
+  })
+
+})
+
 
     app.get("/log",function(req,res){
     //  var pagedata={message:req.flash('message')}
@@ -128,20 +195,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         db.collection('t_user').find({mobile_no:mob,password:pass}).toArray(function(err,result){
           //var data={ };
         if(result.length>0){
-////////////////////////////JSON WEB TOKEN//////////////////////////////////////////////////
-          // jwt.sign({user:"abhi"},"suab",(err,token)=>{
-          //   console.log("hello");
-          //   if(err){
-          //     console.log(err)
-          //       res.status(400).json("err");
-          //     }
-          //   else{
-          //     var token="Bearer"+" "+token;
-          //     data.token=token;
-          //     console.log(data.token);
-              
-          //       console.log("JWT++++++++++"+data)}
-          //   });
+
           var data=result[0];
           // console.log(result[0]);
 
