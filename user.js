@@ -91,7 +91,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     })
 
 
-app.get('/otp',function(req,res){
+app.get('/otp',backdoor,function(req,res){
   res.render("otp",{"message":null});
 })
 
@@ -110,12 +110,12 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         qdata.otp=random.toString();
         
 
-        var q=mongodb.ObjectId();
-        console.log("SUCESSFULL SIGN up")
-        console.log("result _id ="+q);
+        // var q=mongodb.ObjectId();
+        // console.log("SUCESSFULL SIGN up")
+        // console.log("result _id ="+q);
         
-        res.cookie('userData',q, {maxAge:600000000, httpOnly: true});
-        res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
+        // res.cookie('userData',q, {maxAge:600000000, httpOnly: true});
+        // res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
 
 
         req.session.mob=mobilenumber;
@@ -158,16 +158,17 @@ app.get('/checkOtp',backdoor,function(req,res){
 console.log("entered..."+req.session.mob);
 console.log(req.query.otp);
   db.collection('t_user').find({mobile_no:req.session.mob}).toArray(function(err,result){
+    var q=result[0]._id;
     var data=result[0];
-    console.log(result.length);
     console.log(JSON.stringify(result[0]));
-    console.log(result[0].otp);
-    console.log("req.body.otp"+req.query.otp);
     console.log("result.otp"+data.otp);
-  
       // console.log(result)
       if(req.query.otp==data.otp){
-          
+        console.log("result _id ="+q);
+        
+        res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
+        res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
+    
             console.log("otpsuccess");
             res.redirect("/user");
       }else{
