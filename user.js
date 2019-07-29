@@ -187,7 +187,7 @@ console.log(req.query.otp);
 
     app.get("/checkLogin",function(req,res){
       
-      var mob = req.query.mobile;
+      var mob = "91"+req.query.mobile;
     var pass = req.query.password;
       console.log("Mob. no. entered:: "+mob);
       console.log("password entered:: "+pass);
