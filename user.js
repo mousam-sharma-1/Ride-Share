@@ -51,7 +51,7 @@ var db;
 var dbCon;
 mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     dbCon=con;
-    db=con.db('Major');    
+    db=con.db('minor');    
 
     var NodeGeocoder = require('node-geocoder');
  
@@ -88,7 +88,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     })
 
 
-app.get('/otp',backdoor,function(req,res){
+app.get('/otp',function(req,res){
   res.render("otp",{"message":null});
 })
 
@@ -137,7 +137,7 @@ console.log("aage...")
   })
 });
 
-app.get('/checkOtp',backdoor,function(req,res){
+app.get('/checkOtp',function(req,res){
 console.log("entered..."+req.session.mob);
 console.log(req.query.otp);
   db.collection('t_user').find({mobile_no:req.session.mob}).toArray(function(err,result){
