@@ -82,7 +82,7 @@
                         <br><br>
 </div> 
 <div class="fields">                
-  <center> <b>Date</b><br><input type="datetime-local" id="my-date-input" min=now name="date" required>     </center>  
+  <center><b>Date</b><br><input type="datetime-local" id="my-date-input" name="date" required>     </center>  
                               
                         <br><br>
 </div>
@@ -123,7 +123,7 @@
                                               <br><br>
                       </div> 
                       <div class="fields">                
-                        <center><b>Date</b><br><input type="datetime-local" id="my-date-input" min=now name="date" required>   </center>    
+            <center><b>Date</b><br><input type="datetime-local" id="my-date-input2" name="date" required></center>    
                                                     
                                               <br><br>
                       </div>
@@ -161,6 +161,7 @@
 //     minDate = now.toISOString().substring(0,10);     
 
 $('#my-date-input').prop('min', now[0]+":"+now[1]);
+$('#my-date-input2').prop('min', now[0]+":"+now[1]);
 
 
 function movecursor(fromTextBox,toTextBox) {
