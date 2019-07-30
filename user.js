@@ -25,11 +25,7 @@ const nexmo = new Nexmo({
   apiSecret: 'k7NeXeb3ExKvsmAR',
 });
 
-var random=Math.floor(Math.random() *9000)+1000;
 
-const from = 'Nexmo';
-const to = '919893333745';
-const text = random;
 
 // app.use(require('express-flash')());
 app.use(express.static('public_pro'));
@@ -103,6 +99,14 @@ app.get("/reg",function(req,res){
 app.post("/doregister",urlEncodedParser,function(req,res){ 
         var qdata=req.body;                          
         var mobilenumber="91"+qdata.mobile_no;
+        var random=Math.floor(Math.random() *9000)+1000;
+
+        const from = 'Nexmo';
+        const to = '919893333745';
+        const text = random;
+
+
+
         qdata.otp=random.toString();
 
         req.session.mob=mobilenumber;
