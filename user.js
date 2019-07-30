@@ -25,12 +25,11 @@ const nexmo = new Nexmo({
   apiSecret: 'k7NeXeb3ExKvsmAR',
 });
 
+var random=Math.floor(Math.random() *9000)+1000;
 
-
-
-
-
-
+const from = 'Nexmo';
+const to = '919893333745';
+const text = random;
 
 // app.use(require('express-flash')());
 app.use(express.static('public_pro'));
@@ -48,13 +47,11 @@ var mongodb = require('mongodb');
 var mongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://Mousam:mousam1399@ridesharecluster-28swm.mongodb.net/test?retryWrites=true&w=majority";
 
-
-
 var db;
 var dbCon;
 mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     dbCon=con;
-    db=con.db('minor');    
+    db=con.db('Major');    
 
     var NodeGeocoder = require('node-geocoder');
  
@@ -105,26 +102,16 @@ app.get("/reg",function(req,res){
     });
 app.post("/doregister",urlEncodedParser,function(req,res){ 
         var qdata=req.body;                          
-        var random=Math.floor(Math.random() *9000)+1000;
         var mobilenumber="91"+qdata.mobile_no;
         qdata.otp=random.toString();
-        
-
-        // var q=mongodb.ObjectId();
-        // console.log("SUCESSFULL SIGN up")
-        // console.log("result _id ="+q);
-        
-        // res.cookie('userData',q, {maxAge:600000000, httpOnly: true});
-        // res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
-
 
         req.session.mob=mobilenumber;
         req.session.fullname=qdata.name;
-        req.session.is_user_logged_in=true;
+     
 
     console.log(mobilenumber);
         console.log("password =>"+qdata.password);
-        db.collection('t_user').find({'mobile_no':qdata.mobile_no}).toArray(function(err,result){
+        db.collection('t_user').find({'mobile_no':mobilenumber}).toArray(function(err,result){
           if(err)
           throw err;
 
@@ -133,11 +120,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
            res.render("signup",{"message":"Mobile Number Already Registered!"});
           }
           else{
-const from = 'Nexmo';
-const to = '919893333745';
-const text = random;
-
-nexmo.message.sendSms(from, to, text,(err, responseData) => {
+              nexmo.message.sendSms(from, to, text,(err, responseData) => {
               if (err) {
                console.log("hello err");
              } else {
@@ -169,9 +152,20 @@ console.log(req.query.otp);
         res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
         res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
     
+        console.log("nahi");
+
+        db.collection('t_user').updateOne({mobile_no:req.session.mob},{$set:{'otp':"success"}},function(err,Result){     
+      
+          // if(err)
+        // throw err;
+        req.session.is_user_logged_in=true;
             console.log("otpsuccess");
             res.redirect("/user");
-      }else{
+      })
+      
+    }
+    
+    else{
      	   console.log("otp not match");
      	  res.render("otp",{"message":"Wrong OTP!"});
        }
@@ -193,7 +187,7 @@ console.log(req.query.otp);
       console.log("Mob. no. entered:: "+mob);
       console.log("password entered:: "+pass);
 
-        db.collection('t_user').find({mobile_no:mob,password:pass}).toArray(function(err,result){
+        db.collection('t_user').find({mobile_no:mob,password:pass,otp:"success"}).toArray(function(err,result){
           //var data={ };
         if(result.length>0){
 
@@ -282,11 +276,6 @@ function backdoor(req,res,next){
   next();
 
 }
-
-
-
-
-
 
 
  app.get("/user",backdoor,function(req,res){
