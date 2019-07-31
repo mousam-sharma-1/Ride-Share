@@ -74,7 +74,7 @@
 <form action="/doreg/rider" method="POST" name="myForm">
   <div class="rider" id ="r1"><br>       
   <div class="fields">
-    <center><b>Vehicle Type</b>&nbsp;<select name="vtype" required>                                            
+    <center><b>Vehicle Type</b>&nbsp;<select id="mySelect" onclick="myFunction(selectedIndex)" name="vtype" required>                                            
                               <option>2 wheeler</option>  
                               <option>4 wheeler</option>
                           </select></center>
@@ -87,13 +87,13 @@
                         <br><br>
 </div>
 <div class="fields">                       
-  <center> <b>Seats</b>&nbsp;<select name="seat" required>                   
+  <center> <b>Seats</b>&nbsp;<select id="mySelect3" name="seat" required>                   
                               <option>1</option>
                               <option>2</option>
                               <option>3</option>                        
                               <option>4</option>
-                        </select></center>
-                        
+                        </select>
+                        <select id="mySelect2" name="seat" required><option >1</option></select></center>
                         <br><br>
 </div>
 <!--<br><br>
@@ -115,7 +115,7 @@
 <form action="/doreg/driver" method="POST" name="myForm">
                    <div class="driver" id="d1"><br>
                     <div class="fields">
-                      <center> <b>Vehicle Type</b>&nbsp;<select name="vtype" required>                                            
+                      <center> <b>Vehicle Type</b>&nbsp;<select id="mySelect1" onclick="myFunction1(selectedIndex)" name="vtype" required>                                            
                                                     <option>2 wheeler</option>  
                                                     <option>4 wheeler</option>
                                                 </select></center>
@@ -128,13 +128,13 @@
                                               <br><br>
                       </div>
                       <div class="fields">                       
-                        <center><b>Seats</b>&nbsp;<select name="seat" required>                   
+                        <center><b>Seats</b>&nbsp;<select id="mySelect31" name="seat" required>                   
                                                     <option>1</option>
                                                     <option>2</option>
                                                     <option>3</option>                        
                                                     <option>4</option>
-                                              </select></center>
-                            
+                                              </select>
+                        <select id="mySelect21" name="seat" required><option >1</option></select></center>
                                               <br><br>
                       </div>
                       <center><button type="submit" class="btn btn-outline-dark">Offer Ride</button></center>
@@ -151,19 +151,42 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 <script>
+
+document.getElementById("mySelect2").style.display = "none";
+
+function myFunction(x) {
+if(x==0){
+document.getElementById("mySelect3").style.display = "none";
+  document.getElementById("mySelect2").style.display = "block";
+}
+else{
+document.getElementById("mySelect2").style.display = "none";
+  document.getElementById("mySelect3").style.display = "block";
+}
+}
+
+
+
+document.getElementById("mySelect21").style.display = "none";
+
+function myFunction1(x) {
+if(x==0){
+document.getElementById("mySelect31").style.display = "none";
+  document.getElementById("mySelect21").style.display = "block";
+}
+else{
+document.getElementById("mySelect21").style.display = "none";
+  document.getElementById("mySelect31").style.display = "block";
+}
+}
+
+
  var d = new Date().toLocaleString([], {timeZone: "GMT"});
- //.getTimeZone("IST");
   var n = new Date(d).toISOString();
   var now = n.split(":");
  var t=new Date().getHours();
   var a=now[0];
-  var b=a.split('T');
- //alert("now"+b[0]+'T'+t+':00');
-  //alert(b[0]+'T0'+c+":"+now[1]);
- //alert(now[0]+":"+now[1])
-//var now = new Date().toISOString();
-//var now = "2019-07-30T17:19" ;
-//     minDate = now.toISOString().substring(0,10);     
+  var b=a.split('T'); 
 $('#my-date-input').prop('min', b[0]+'T'+t+':00');
 //$('#my-date-input').prop('min', now[0]+":"+now[1]);
 $('#my-date-input2').prop('min', b[0]+'T'+t+':00');
