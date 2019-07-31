@@ -100,14 +100,16 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         var qdata=req.body;                          
         var mobilenumber="91"+qdata.mobile_no;
         var random=Math.floor(Math.random() *9000)+1000;
-
+        var otp=random.toString();
+        console.log(otp);
+        console.log(random);
         const from = 'Nexmo';
         const to = '919893333745';
         const text = random;
 
 
 
-        qdata.otp=random.toString();
+        
 
         req.session.mob=mobilenumber;
         req.session.fullname=qdata.name;
@@ -115,7 +117,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
 
     console.log(mobilenumber);
         console.log("password =>"+qdata.password);
-        db.collection('t_user').find({'mobile_no':mobilenumber}).toArray(function(err,result){
+        db.collection('t_user').find({'mobile_no':mobilenumber,"otp":"success"}).toArray(function(err,result){
           if(err)
           throw err;
 
@@ -129,7 +131,8 @@ app.post("/doregister",urlEncodedParser,function(req,res){
                console.log("hello err");
              } else {
        console.log(responseData);
-        db.collection('t_user').insertOne({name:qdata.name,mobile_no:mobilenumber,otp:qdata.otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
+       console.log(otp);
+        db.collection('t_user').insertOne({name:qdata.name,mobile_no:mobilenumber,otp:otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
         if(err)
         throw err;        
       }
@@ -144,13 +147,13 @@ console.log("aage...")
 app.get('/checkOtp',function(req,res){
 console.log("entered..."+req.session.mob);
 console.log(req.query.otp);
-  db.collection('t_user').find({mobile_no:req.session.mob}).toArray(function(err,result){
+  db.collection('t_user').find({mobile_no:req.session.mob,otp:req.query.otp}).toArray(function(err,result){
     var q=result[0]._id;
     var data=result[0];
     console.log(JSON.stringify(result[0]));
     console.log("result.otp"+data.otp);
       // console.log(result)
-      if(req.query.otp==data.otp){
+      if(result.length==1){
         console.log("result _id ="+q);
         
         res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
