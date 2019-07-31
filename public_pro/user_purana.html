@@ -87,7 +87,7 @@
                         <br><br>
 </div>
 <div class="fields">                       
-  <center> <b>Seats</b>&nbsp;<select id="mySelect2" name="seat" required>                   
+  <center> <b>Seats</b>&nbsp;<br><select id="mySelect2" name="seat" required>                   
                               <option>1</option>
                               <option>2</option>
                               <option>3</option>                        
@@ -128,7 +128,7 @@
                                               <br><br>
                       </div>
                       <div class="fields">                       
-                        <center><b>Seats</b>&nbsp;<select id="mySelect21" name="seat" required>                   
+                        <center><b>Seats</b>&nbsp;<br><select id="mySelect21" name="seat" required>                   
                                                     <option>1</option>
                                                     <option>2</option>
                                                     <option>3</option>                        
@@ -153,13 +153,16 @@
 <script>
 
 document.getElementById("mySelect2").style.display = "none";
+//document.getElementById("mySelect3").style.display = "none";
 
-function myFunction(x) {
-if(x==0){
+function myFunction(selectedIndex) {
+if(selectedIndex===1){
+  console.log(selectedIndex);
 document.getElementById("mySelect3").style.display = "none";
   document.getElementById("mySelect2").style.display = "block";
 }
-else if(x==1){
+else if(selectedIndex===0){
+  console.log(selectedIndex);
 document.getElementById("mySelect2").style.display = "none";
   document.getElementById("mySelect3").style.display = "block";
 }
@@ -168,17 +171,22 @@ document.getElementById("mySelect2").style.display = "none";
 
 
 document.getElementById("mySelect21").style.display = "none";
+//document.getElementById("mySelect3").style.display = "none";
 
-function myFunction1(x) {
-if(x==0){
+function myFunction1(selectedIndex) {
+if(selectedIndex===1){
+  console.log(selectedIndex);
 document.getElementById("mySelect31").style.display = "none";
   document.getElementById("mySelect21").style.display = "block";
 }
-else{
+else if(selectedIndex===0){
+  console.log(selectedIndex);
 document.getElementById("mySelect21").style.display = "none";
   document.getElementById("mySelect31").style.display = "block";
 }
 }
+
+
 
 
  var d = new Date().toLocaleString([], {timeZone: "GMT"});
