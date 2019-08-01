@@ -243,7 +243,7 @@ console.log(req.query.otp);
               })
       
 
-              app.get("/remove/:id",function(req,res){
+              app.get("/remove/:id",backdoor,function(req,res){
                 var id=req.params.id;
                 console.log("Removing id : "+id);
                 db.collection('travels').deleteOne({_id: new mongodb.ObjectID(id)},function(err,result){
