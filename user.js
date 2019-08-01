@@ -243,6 +243,22 @@ console.log(req.query.otp);
               })
       
 
+              app.get("/remove/:id",function(req,res){
+                var id=req.params.id;
+                console.log("Removing id : "+id);
+                db.collection('travels').deleteOne({_id: new mongodb.ObjectID(id)},function(err,result){
+                    if(err)
+                        console.log("Remove Error :"+err);         
+            
+                    res.redirect("/history");
+                });
+            })
+
+
+
+
+
+
 
               // app.get("/user", verifytoken.verifyToken,function(req,res){
               //   jwt.verify(req.token,'suab',(err,authdata)=>{
