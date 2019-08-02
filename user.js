@@ -320,17 +320,19 @@ app.post("/doreg/rider",backdoor,urlEncodedParser, function(req,res){
 var rad="Ri_"+Math.random().toString(36).substring(2, 8);
 console.log(rad);
 res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true});
-
+console.log("seat::"+req.body.seat[0])
+res.cookie('seat', req.body.seat[0], {maxAge:600000000, httpOnly: true });
 
     // console.log(req.cookie.q);
     var q=req.body;
     console.log(q);
-    db.collection('travels').insertOne({'type':"Rider",code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match_id':''}),
+    db.collection('travels').insertOne({'type':"Rider",'name':req.session.fullname,code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat[0],'sor_address':'','des_address':'','Match_id':''}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,res){
     if(err)
     throw err;
     console.log(res);
+    
  
 }
 res.redirect("/map");
@@ -341,16 +343,17 @@ app.post("/doreg/driver",backdoor,urlEncodedParser, function(req,res){
     var rad="Dr_"+Math.random().toString(36).substring(2, 8);
     console.log(rad);
     res.cookie('Rcode', rad, {maxAge:600000000, httpOnly: true });
-    
+    console.log("seat::"+req.body.seat[0])
+    res.cookie('seat', req.body.seat[0], {maxAge:600000000, httpOnly: true });
     var q=req.body;
     console.log(q);
     
-    db.collection('travels').insertOne({'type':"Driver",code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat,'sor_address':'','des_address':'','Match_id':''}),
+    db.collection('travels').insertOne({'type':"Driver",'name':req.session.fullname,code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat[0],'sor_address':'','des_address':'','Match_id':''}),
     function(err,res){
     if(err)
     throw err;
     console.log(res);
- 
+    
 }
 res.redirect("/map");
 })
@@ -414,15 +417,21 @@ throw err;
 }
 
 
+console.log(req.cookies.seat);
+db.collection('travels').find({'travelId': { $ne: req.cookies.userData }, "Seat":{$gte:req.cookies.seat}}).toArray(function(err,result){
+  if(err)
+  throw err;
+console.log("RES::"+result.length);
+  res.render('result',{'data':result}); 
+})
 
 
-},3000);
+},2000);
   }
   getValue();
   
 
 
-   res.redirect('/map');
  
 
 });   
