@@ -417,20 +417,40 @@ throw err;
 }
 
 
-console.log(req.cookies.seat);
-db.collection('travels').find({'travelId': { $ne: req.cookies.userData }, "Seat":{$gte:req.cookies.seat}}).toArray(function(err,result){
-  if(err)
-  throw err;
-console.log("RES::"+result.length);
-  res.render('result',{'data':result}); 
-})
+
+var Utype= req.cookies.Rcode.split("_");
+console.log(Utype[0]);
+if(Utype[0]=="Ri")
+{
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat}}).toArray(function(err,result){
+    if(err)
+    throw err;
+  console.log("RES::"+result.length);
+  if(result.length>0)
+    res.render('result',{'message':null,'data':result}); 
+  else
+  res.render('result',{'message':"No Match Found",'data':result});
+  })
+}
+else{
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat}}).toArray(function(err,result){
+    if(err)
+    throw err;
+  console.log("RES::"+result.length);
+  if(result.length>0)
+  res.render('result',{'message':null,'data':result}); 
+else
+res.render('result',{'message':"No Match Found",'data':result});
+  })
+}
+
+
 
 
 },2000);
   }
   getValue();
   
-
 
  
 
