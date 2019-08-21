@@ -3,11 +3,12 @@ var app = express();
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var client = require('socket.io').listen(4000).sockets;
 const Nexmo = require('nexmo');
 var ejs=require('ejs');
 //var jwt=require('jsonwebtoken');
 var router=express.Router();
-//var verifytoken=require("./helper/verifytoken");
+//var chats=require("./helper/chat");
 app.set('view engine','ejs');
 
 app.use(cookieParser());
@@ -56,9 +57,8 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
      
       // Optional depending on the providers
       httpAdapter: 'https', // Default
-      apiKey: 'AIzaSyAIKBwIgz6GFw5m2NM4vE9Om84P2hUXnf8', // billing enabled key(Ankit sir Stoway)
-
-      //apiKey: 'AIzaSyDu-O2F3kvwNiBjPQGuScZBpzhXyBk50S8', // billing enabled key(Akash sir ziasy)
+      //apiKey: 'AIzaSyAIKBwIgz6GFw5m2NM4vE9Om84P2hUXnf8', // billing enabled key(Ankit sir Stoway)
+      apiKey: 'AIzaSyCQ2l2mGOB24ZWMaxOt3fasayoNXM8NdAo', // billing enable(Akash)
       //apiKey: 'AIzaSyAnE8izq7BaeFr_HkCUyb3L99NCFM2rQRo', //Mousam
       formatter: null         // 'gpx', 'string', ...
     };
@@ -253,10 +253,6 @@ console.log(req.query.otp);
                     res.redirect("/history");
                 });
             })
-
-
-
-
 
 
 
@@ -455,6 +451,18 @@ res.render('result',{'message':"No Match Found",'data':result});
  
 
 });   
+
+app.get("/chat/:id",backdoor,function(req,res){
+  var id=req.params.id;
+  db.collection('travels').updateOne({'travelId':req.cookies.userData},{$set:{Match_id:new mongodb.ObjectID(id)}},function(err,result){
+    if(err)
+    throw err;
+    console.log("Match id::"+id);
+  })
+});
+
+
+
 
 app.listen(process.env.PORT || 3000,function(){
     console.log("Server :3000");
