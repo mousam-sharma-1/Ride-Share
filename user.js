@@ -83,6 +83,10 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
       res.sendFile(__dirname+"/public_pro/contact.html"); 
     })
 
+    app.get("/sent",backdoor,function(req,res){
+      res.sendFile(__dirname+"/public_pro/sent.html")
+    })
+
 
 app.get('/otp',function(req,res){
   res.render("otp",{"message":null});
@@ -110,7 +114,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         console.log(random);
         const from = 'Nexmo';
         const to = '919893333745';
-        const text = random;
+        const text = qdata.mobile_no+" - OTP : "+random;
 
 
 
@@ -163,8 +167,6 @@ console.log(req.query.otp);
         
         res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
         res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
-    
-        console.log("nahi");
 
         db.collection('t_user').updateOne({mobile_no:req.session.mob},{$set:{'otp':"success"}},function(err,Result){     
       
@@ -452,17 +454,30 @@ res.render('result',{'message':"No Match Found",'data':result});
 
 });   
 
-app.get("/chat/:id",backdoor,function(req,res){
+app.get("/chat/:travelId/:id",backdoor,function(req,res){
+  var tid=req.params.travelId;
   var id=req.params.id;
-  db.collection('travels').updateOne({'travelId':req.cookies.userData},{$set:{Match_id:new mongodb.ObjectID(id)}},function(err,result){
-    if(err)
+       
+  console.log("in chats:"+id)
+  console.log("name id:"+new mongodb.ObjectID(tid));
+  db.collection('t_user').find({_id:new mongodb.ObjectID(tid)}).toArray(function(err,res){
+    if (err)
     throw err;
-    console.log("Match id::"+id);
+    console.log(res.length);
+    console.log(req.session.fullname);
+    console.log(res[0].name);
+    console.log(res[0].mobile_no);
+    const from = 'Nexmo';
+    const to = '919893333745';    // const to = res[0].mobile_no;
+    const text ="Request From "+req.session.fullname+" To You "+res[0].name+"("+res[0].mobile_no+") For Ride Share";
+    nexmo.message.sendSms(from, to, text,(err, responseData) => {
+      if (err) 
+      throw err;
+  console.log(responseData);
   })
-});
-
-
-
+  })
+  res.redirect("/sent");
+})
 
 app.listen(process.env.PORT || 3000,function(){
     console.log("Server :3000");
