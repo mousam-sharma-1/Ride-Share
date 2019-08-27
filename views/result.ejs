@@ -70,6 +70,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="/user">New Ride</a></li>
                 <li class="nav-item"><a class="nav-link" href="/history">My Rides</a></li>
+                <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
                 <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">contact</a></li>
                     <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/logout">Log Out</a></li>
@@ -89,16 +90,10 @@
             <tr><td style="padding-left: 0.5%"><i class="fa fa-dot-circle-o" style="font-size:18px; color: rgb(54, 54, 223)"></i></td><td style="padding: 0.5%"><%=p.sor_address%></td></tr>
             <td style="padding-left: 1%"><i class="fa fa-ellipsis-v" style="font-size:18px; color: rgb(192, 189, 189)"></i><br></td>
             <tr><td style="padding-left: 0.5%"><i class="fa fa-map-marker" style="font-size:18px; color: rgb(248, 28, 28)"></i></td><td style="width: 100% ;padding: 0.5%"><%=p.des_address%></td></tr>
-          <tr><td><a id="re" class="btn btn-primary" style="margin: 7%" onClick="pop()" href="chat/<%=p.travelId%>/<%=p._id%>">Request</a></td></tr>
+          <tr><td><a id="re" class="btn btn-primary" style="margin: 7%" href="chat/<%=p.travelId%>/<%=p._id%>">Request</a></td></tr>
           </table>
   </div><br>
     <% }) %>
-
 </div>
 </body>
-<script>
-function pop(){
-    alert("Request Send.");
-}
-</script>
 </html>

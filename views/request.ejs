@@ -25,6 +25,7 @@
 	width: 42%;
 	margin-left: 25%;
 }
+
 @media screen and (max-width: 600px) {
 .form-group-1 {
 	width: 75%;
@@ -72,35 +73,27 @@
                 <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
                 <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">contact</a></li>
-                    <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/logout">Log Out</a></li>
+                <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/logout">Log Out</a></li>
             </ul>
         </div>
     </nav>
     <hr><hr>
 </body>
 <body>
-  <h4 style="margin-left: 1%; color: rgb(85, 86, 87)"><%=name%></h4><br>
+  <h4 style="margin-left: 1%; color: rgb(85, 86, 87)">REQUEST</h4><br>
+  <h3 style="margin-left: 1%; color: red"><%=message%></h3>
   <div class="table-responsive">
-  
-      <!-- <tr><td>Type</td> <td>Vehicle Type</td> <td>Seats</td> -->
-        <!-- <td><h2>Source Address</h2></td><td><h2>Destination Address</h2></td> -->
   <% data.forEach(function(p){ %>
     <div style="box-shadow: 0 8px 8px 0 rgba(88, 87, 87, 0.2); border: 1px solid rgb(218, 213, 213);border-radius: 12px; max-width: 950px; margin-left: 1%;margin-right: 1%; overflow: hidden;">
-      <table>
-      <tr class="trr" style="background-color: rgba(240, 239, 239, 0.63)"><td style="padding: 1%"><b><%=p.type%></b></td><td style="padding: 2%"><%=p.DateTime%></td><td style="color: rgb(177, 173, 173)"><%=p.Seat[0]%>&nbspSeat&nbsp</td></tr>
-      <tr><td style="padding-left: 0.5%"><i class="fa fa-dot-circle-o" style="font-size:18px; color: rgb(54, 54, 223)"></i></td><td style="padding: 0.5%"><%=p.sor_address%></td></tr>
-      <td style="padding-left: 1%"><i class="fa fa-ellipsis-v" style="font-size:18px; color: rgb(192, 189, 189)"></i><br></td>
-      <tr><td style="padding-left: 0.5%"><i class="fa fa-map-marker" style="font-size:18px; color: rgb(248, 28, 28)"></i></td><td style="width: 100% ;padding: 0.5%"><%=p.des_address%></td></tr>
-    <tr><td><a class="btn btn-danger" style="margin: 7%" onclick="pop()" href="remove/<%=p._id%>">Delete</a></td></tr>
-    </table>
+    <table>
+            <tr class="trr" style="background-color: rgba(240, 239, 239, 0.63)"><td style="padding: 1%"><b><%=p.name%></b></td><td style="padding: 2%"><%=p.DateTime%></td><td style="color: rgb(177, 173, 173)"><%=p.Seat%>&nbspSeat&nbsp</td></tr>
+            <tr><td style="padding-left: 0.5%"><i class="fa fa-dot-circle-o" style="font-size:18px; color: rgb(54, 54, 223)"></i></td><td style="padding: 0.5%"><%=p.sor_address%></td></tr>
+            <td style="padding-left: 1%"><i class="fa fa-ellipsis-v" style="font-size:18px; color: rgb(192, 189, 189)"></i><br></td>
+            <tr><td style="padding-left: 0.5%"><i class="fa fa-map-marker" style="font-size:18px; color: rgb(248, 28, 28)"></i></td><td style="width: 100% ;padding: 0.5%"><%=p.des_address%></td></tr>
+          <tr><td><a id="re" class="btn btn-primary" style="margin: 1%" href="">Accept</a></td><td><a id="re" class="btn btn-danger" style="margin: 1%" href="removeReq/<%=p._id%>">Delete</a></td></tr>
+          </table>
   </div><br>
     <% }) %>
-
 </div>
 </body>
-<script>
-function pop(){
-    alert("Record Deleted.");
-}
-</script>
 </html>

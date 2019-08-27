@@ -122,6 +122,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
 
         req.session.mob=mobilenumber;
         req.session.fullname=qdata.name;
+        
      
 
     console.log(mobilenumber);
@@ -164,7 +165,6 @@ console.log(req.query.otp);
       // console.log(result)
       if(result.length==1){
         console.log("result _id ="+q);
-        
         res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
         res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
 
@@ -209,7 +209,7 @@ console.log(req.query.otp);
           // console.log(result[0]);
 
           req.session.fullname=data.name;
-
+          req.session.myID=data._id;
           req.session.is_user_logged_in=true;
 
           console.log("session="+req.session.fullname+"=="+req.session.is_user_logged_in);
@@ -256,7 +256,15 @@ console.log(req.query.otp);
                 });
             })
 
-
+            app.get("/removeReq/:id",backdoor,function(req,res){
+              var id=req.params.id;
+              console.log("Removing Request id : "+id);
+              db.collection('travels').updateOne({_id:new mongodb.ObjectID(id)},{$set:{"Match_id":[""]}}),function(err,result){
+                  if(err)
+                  throw err;    
+              }
+              res.redirect("/request");
+          })
 
               // app.get("/user", verifytoken.verifyToken,function(req,res){
               //   jwt.verify(req.token,'suab',(err,authdata)=>{
@@ -474,10 +482,38 @@ app.get("/chat/:travelId/:id",backdoor,function(req,res){
       if (err) 
       throw err;
   console.log(responseData);
+  
+
   })
   })
+  //db.collection('requests').updateOne({from:req.session.myID,to:tid,for:id,forShow:req.cookies.Rcode}),function(err,Result){
+  db.collection('travels').updateOne({code:req.cookies.Rcode},{$set:{"Match_id":[tid]}}),function(err,Result){
+    if(err)
+    throw err;        
+    console.log("aage...insert");
+  }
+
   res.redirect("/sent");
 })
+
+
+
+app.get("/request",backdoor,function(req,res){
+db.collection('travels').find({"Match_id":[req.session.myID]}).toArray(function(err,result){
+  if (err)
+  throw err;
+  console.log(result.length);
+  console.log(result);
+  if(result.length>0){
+    res.render('request',{'message':null,'data':result});
+  }
+  else{
+    res.render('request',{'message':"NO REQUEST",'data':result});
+  }
+})
+})
+
+
 
 app.listen(process.env.PORT || 3000,function(){
     console.log("Server :3000");
