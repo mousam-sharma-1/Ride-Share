@@ -207,7 +207,7 @@ console.log(req.query.otp);
 
           var data=result[0];
           // console.log(result[0]);
-
+          req.session.mob=data.mobile_no;
           req.session.fullname=data.name;
           req.session.myID=data._id;
           req.session.is_user_logged_in=true;
@@ -266,18 +266,39 @@ console.log(req.query.otp);
               res.redirect("/request");
           })
 
-              // app.get("/user", verifytoken.verifyToken,function(req,res){
-              //   jwt.verify(req.token,'suab',(err,authdata)=>{
-              //     if(authdata){
-              //       res.sendFile(__dirname+"/public_pro/user_purana.html");
-              //     }
-              //     else{
-              //       res.status(400).json("no kkk token given")
-              //     }
-              //   });
-              
-                
-              // });
+            app.get("/accept/:travelId",backdoor,function(req,res){
+              var tid=req.params.travelId;
+              console.log(tid);
+              db.collection('t_user').find({_id:new mongodb.ObjectID(tid)}).toArray(function(err,res){
+                console.log(res.length);
+                console.log(res[0].name);
+                console.log(res[0].mobile_no);
+                console.log(req.session.mob);
+                console.log("'"+req.session.mob+"'");
+             if(res.length>0){
+                const from = 'Nexmo';
+              const to = '919893333745';    //const to = req.session.mob;
+              const text ="Sucessfull Connection !! contact "+res[0].name+" - "+res[0].mobile_no+" For your Ride ,Thanks For Use.";
+              nexmo.message.sendSms(from, to, text,(err, responseData) => {
+                if (err) 
+                throw err;
+            console.log(responseData);
+            })
+            another();
+           function another(){
+            const from = 'Nexmo';
+            const to = '919893333745';    //const to = res[0].mobile_no;
+            const text ="Sucessfull Connection !! contact "+req.session.fullname+" - "+req.session.mob+" For your Ride ,Thanks For Use.";
+            nexmo.message.sendSms(from, to, text,(err, responseData) => {
+              if (err) 
+              throw err;
+          console.log(responseData);
+          }) 
+           }
+          }
+          })
+res.redirect("/sent");
+            })
 
 
 app.get("/history",backdoor,function(req,res){
