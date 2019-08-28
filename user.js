@@ -22,8 +22,10 @@ app.use(session({
 
 
 const nexmo = new Nexmo({
-  apiKey: 'be76a80b',
-  apiSecret: 'k7NeXeb3ExKvsmAR',
+  apiKey: '8630972e',
+  apiSecret: 'jieBARyFP3DhHNwL',
+  //apiKey: 'be76a80b',
+  //apiSecret: 'k7NeXeb3ExKvsmAR',
 });
 
 
@@ -113,7 +115,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         console.log(otp);
         console.log(random);
         const from = 'Nexmo';
-        const to = '919893333745';
+        const to = '917000944479';
         const text = qdata.mobile_no+" - OTP : "+random;
 
 
@@ -266,18 +268,18 @@ console.log(req.query.otp);
               res.redirect("/request");
           })
 
-            app.get("/accept/:travelId",backdoor,function(req,res){
+            app.get("/accept/:travelId/:id",backdoor,function(req,res){
               var tid=req.params.travelId;
+              var id1=req.params.id;
               console.log(tid);
               db.collection('t_user').find({_id:new mongodb.ObjectID(tid)}).toArray(function(err,res){
                 console.log(res.length);
                 console.log(res[0].name);
                 console.log(res[0].mobile_no);
                 console.log(req.session.mob);
-                console.log("'"+req.session.mob+"'");
              if(res.length>0){
                 const from = 'Nexmo';
-              const to = '919893333745';    //const to = req.session.mob;
+              const to = '917000944479';    //const to = req.session.mob;
               const text ="Sucessfull Connection !! contact "+res[0].name+" - "+res[0].mobile_no+" For your Ride ,Thanks For Use.";
               nexmo.message.sendSms(from, to, text,(err, responseData) => {
                 if (err) 
@@ -287,7 +289,7 @@ console.log(req.query.otp);
             another();
            function another(){
             const from = 'Nexmo';
-            const to = '919893333745';    //const to = res[0].mobile_no;
+            const to = '917000944479';    //const to = res[0].mobile_no;
             const text ="Sucessfull Connection !! contact "+req.session.fullname+" - "+req.session.mob+" For your Ride ,Thanks For Use.";
             nexmo.message.sendSms(from, to, text,(err, responseData) => {
               if (err) 
@@ -297,6 +299,16 @@ console.log(req.query.otp);
            }
           }
           })
+          console.log("nnnnn--"+id1);
+          db.collection('travels').updateOne({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE","Match_id":[""]}}),function(err,res){
+            if(err)
+            throw err;
+          }
+          console.log("mmm--"+req.cookies.upID);
+          db.collection('travels').updateOne({_id:new mongodb.ObjectID(req.cookies.upID)},{$set:{"status":"COMPLETE","Match_id":[""]}}),function(err,res){
+            if(err)
+            throw err;
+          }
 res.redirect("/sent");
             })
 
@@ -353,7 +365,7 @@ res.cookie('seat', req.body.seat[0], {maxAge:600000000, httpOnly: true });
     // console.log(req.cookie.q);
     var q=req.body;
     console.log(q);
-    db.collection('travels').insertOne({'type':"Rider",'name':req.session.fullname,code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat[0],'sor_address':'','des_address':'','Match_id':''}),
+    db.collection('travels').insertOne({'type':"Rider",'name':req.session.fullname,code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat[0],'sor_address':'','des_address':'','Match_id':[""],"status":"INCOMPLETE"}),
     // db.collection('travels').updateOne({'mobile_no':'2222444444'},{$push:{'Logs':{$each:[{'type':"rider",'vehicle type':req.body.vtype,'Date-time':req.body.date,'id_img':req.body.id,'sor_address':'','des_address':''}]}}}),
     function(err,res){
     if(err)
@@ -375,7 +387,7 @@ app.post("/doreg/driver",backdoor,urlEncodedParser, function(req,res){
     var q=req.body;
     console.log(q);
     
-    db.collection('travels').insertOne({'type':"Driver",'name':req.session.fullname,code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat[0],'sor_address':'','des_address':'','Match_id':''}),
+    db.collection('travels').insertOne({'type':"Driver",'name':req.session.fullname,code:rad,travelId:req.cookies.userData,'vehicle_type':req.body.vtype,'DateTime':req.body.date,'Seat':req.body.seat[0],'sor_address':'','des_address':'','Match_id':[""],"status":"INCOMPLETE"}),
     function(err,res){
     if(err)
     throw err;
@@ -449,7 +461,7 @@ var Utype= req.cookies.Rcode.split("_");
 console.log(Utype[0]);
 if(Utype[0]=="Ri")
 {
-  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat}}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -460,7 +472,7 @@ if(Utype[0]=="Ri")
   })
 }
 else{
-  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat}}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -486,7 +498,7 @@ res.render('result',{'message':"No Match Found",'data':result});
 app.get("/chat/:travelId/:id",backdoor,function(req,res){
   var tid=req.params.travelId;
   var id=req.params.id;
-       
+  res.cookie('upID', id, {maxAge:600000000, httpOnly: true });   
   console.log("in chats:"+id)
   console.log("name id:"+new mongodb.ObjectID(tid));
   db.collection('t_user').find({_id:new mongodb.ObjectID(tid)}).toArray(function(err,res){
@@ -497,7 +509,7 @@ app.get("/chat/:travelId/:id",backdoor,function(req,res){
     console.log(res[0].name);
     console.log(res[0].mobile_no);
     const from = 'Nexmo';
-    const to = '919893333745';    // const to = res[0].mobile_no;
+    const to = '917000944479';    // const to = res[0].mobile_no;
     const text ="Request From "+req.session.fullname+" To You "+res[0].name+"("+res[0].mobile_no+") For Ride Share";
     nexmo.message.sendSms(from, to, text,(err, responseData) => {
       if (err) 
