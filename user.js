@@ -300,12 +300,12 @@ console.log(req.query.otp);
           }
           })
           console.log("nnnnn--"+id1);
-          db.collection('travels').updateOne({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE","Match_id":""}}),function(err,res){
+          db.collection('travels').updateOne({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE"}}),function(err,res){
             if(err)
             throw err;
           }
           console.log("mmm--"+req.cookies.upID);
-          db.collection('travels').updateOne({_id:new mongodb.ObjectID(req.cookies.upID)},{$set:{"status":"COMPLETE","Match_id":""}}),function(err,res){
+          db.collection('travels').updateOne({_id:new mongodb.ObjectID(req.cookies.upID)},{$set:{"status":"COMPLETE"}}),function(err,res){
             if(err)
             throw err;
           }
@@ -482,45 +482,37 @@ else
 res.render('result',{'message':"No Match Found",'data':result});
   })
 }
-
-
-
-
 },2000);
   }
   getValue();
-  
-
- 
-
-});   
+})
 
 
 
-
-app.get("/view/:id",backdoor,function(req,res){
+app.post("/view/:id",backdoor,function(req,res){
   var idv=req.params.id;
-  console.log("VIEW ID "+idv);
-  db.collection('travels').find({_id:new mongodb.ObjectID(idv)}).toArray(function(err,resl){
+  console.log("VIEW ID "+idv+" TYPE OF =="+typeof idv);
+  
+  db.collection('travels').findOne({_id:new mongodb.ObjectID(idv)},function(err,data){
     if(err)
     throw err;
-    console.log(resl.length);
-  console.log("req.cookies.userData "+resl[0].travelId);
+    console.log(data);
+  console.log("req.cookies.userData "+data.travelId);
   
-  console.log("sorc "+resl[0].sor_address);
+  console.log("sorc "+data.sor_address);
 
-  console.log("desc"+resl[0].des_address)
+  console.log("desc"+data.des_address)
 
-  console.log("req.cookies.seat "+resl[0].Seat);
+  console.log("req.cookies.seat "+data.Seat);
 
-  console.log("req.cookies.Rcode-code "+resl[0].code);
-  res.cookie('Rcode', resl[0].code, {maxAge:600000000, httpOnly: true});
+  console.log("req.cookies.Rcode-code "+data.code);
+  res.cookie('Rcode', data.code, {maxAge:600000000, httpOnly: true});
 
-  var Utype= resl[0].code.split("_");
+  var Utype= data.code.split("_");
 console.log(Utype[0]);
 if(Utype[0]=="Ri")
 {
-  db.collection('travels').find({'travelId': { $ne:resl[0].travelId },"type":"Driver","sor_address":resl[0].sor_address,"des_address":resl[0].des_address,"Seat":{$gte:resl[0].Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne:data.travelId },"type":"Driver","sor_address":data.sor_address,"des_address":data.des_address,"Seat":{$gte:data.Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -531,7 +523,7 @@ if(Utype[0]=="Ri")
   })
 }
 else{
-  db.collection('travels').find({'travelId': { $ne:resl[0].travelId },"type":"Rider","sor_address":resl[0].sor_address,"des_address":resl[0].des_address,"Seat":{$gte:resl[0].Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne:data.travelId },"type":"Rider","sor_address":data.sor_address,"des_address":data.des_address,"Seat":{$gte:data.Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -543,6 +535,16 @@ res.render('result',{'message':"No Match Found",'data':result});
 }
 })
 })
+
+
+
+// app.get('/rest',function(req,res){
+//   res.render('result',{'message':null,'data':result});
+// })
+// app.get('/rest2',function(req,res){
+//   res.render('result',{'message':"No Match Found",'data':result});
+// })
+
 
 
 app.get("/chat/:travelId/:id",backdoor,function(req,res){
@@ -593,7 +595,7 @@ else{
 
 app.get("/request",backdoor,function(req,res){
   console.log("req.session.myID ye-- "+req.session.myID)
-db.collection('travels').find({"Match_id":req.session.myID}).toArray(function(err,result){
+db.collection('travels').find({"Match_id":req.session.myID,"status":"INCOMPLETE"}).toArray(function(err,result){
   if (err)
   throw err;
   console.log(result.length);
