@@ -300,12 +300,12 @@ console.log(req.query.otp);
           }
           })
           console.log("nnnnn--"+id1);
-          db.collection('travels').updateOne({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE","Match_id":[""]}}),function(err,res){
+          db.collection('travels').updateOne({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE","Match_id":""}}),function(err,res){
             if(err)
             throw err;
           }
           console.log("mmm--"+req.cookies.upID);
-          db.collection('travels').updateOne({_id:new mongodb.ObjectID(req.cookies.upID)},{$set:{"status":"COMPLETE","Match_id":[""]}}),function(err,res){
+          db.collection('travels').updateOne({_id:new mongodb.ObjectID(req.cookies.upID)},{$set:{"status":"COMPLETE","Match_id":""}}),function(err,res){
             if(err)
             throw err;
           }
@@ -495,9 +495,64 @@ res.render('result',{'message':"No Match Found",'data':result});
 
 });   
 
+
+
+
+app.get("/view/:id",backdoor,function(req,res){
+  var idv=req.params.id;
+  console.log("VIEW ID "+idv);
+  db.collection('travels').find({_id:new mongodb.ObjectID(idv)}).toArray(function(err,resl){
+    if(err)
+    throw err;
+    console.log(resl.length);
+  console.log("req.cookies.userData "+resl[0].travelId);
+  
+  console.log("sorc "+resl[0].sor_address);
+
+  console.log("desc"+resl[0].des_address)
+
+  console.log("req.cookies.seat "+resl[0].Seat);
+
+  console.log("req.cookies.Rcode-code "+resl[0].code);
+  res.cookie('Rcode', resl[0].code, {maxAge:600000000, httpOnly: true});
+
+  var Utype= resl[0].code.split("_");
+console.log(Utype[0]);
+if(Utype[0]=="Ri")
+{
+  db.collection('travels').find({'travelId': { $ne:resl[0].travelId },"type":"Driver","sor_address":resl[0].sor_address,"des_address":resl[0].des_address,"Seat":{$gte:resl[0].Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+    if(err)
+    throw err;
+  console.log("RES::"+result.length);
+  if(result.length>0)
+  res.render('result',{'message':null,'data':result});
+  else
+  res.render('result',{'message':"No Match Found",'data':result});
+  })
+}
+else{
+  db.collection('travels').find({'travelId': { $ne:resl[0].travelId },"type":"Rider","sor_address":resl[0].sor_address,"des_address":resl[0].des_address,"Seat":{$gte:resl[0].Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+    if(err)
+    throw err;
+  console.log("RES::"+result.length);
+  if(result.length>0)
+  res.render('result',{'message':null,'data':result});
+else
+res.render('result',{'message':"No Match Found",'data':result});
+  })
+}
+})
+})
+
+
 app.get("/chat/:travelId/:id",backdoor,function(req,res){
   var tid=req.params.travelId;
   var id=req.params.id;
+  db.collection('travels').find({"code":req.cookies.Rcode,"Match_id":tid}).toArray(function(err,result){
+    console.log("bhaiiii=="+result.length);
+    if(result.length==0){
+  console.log("/chat/:travelId-tid "+tid);
+  console.log("/chat/:id-upID "+id);
   res.cookie('upID', id, {maxAge:600000000, httpOnly: true });   
   console.log("in chats:"+id)
   console.log("name id:"+new mongodb.ObjectID(tid));
@@ -515,24 +570,30 @@ app.get("/chat/:travelId/:id",backdoor,function(req,res){
       if (err) 
       throw err;
   console.log(responseData);
-  
+  })
+  })
 
-  })
-  })
   //db.collection('requests').updateOne({from:req.session.myID,to:tid,for:id,forShow:req.cookies.Rcode}),function(err,Result){
-  db.collection('travels').updateOne({code:req.cookies.Rcode},{$set:{"Match_id":[tid]}}),function(err,Result){
+  console.log("req.cookies.Rcode "+req.cookies.Rcode)
+  db.collection('travels').updateOne({code:req.cookies.Rcode},{$push:{"Match_id":tid}}),function(err,Result){
     if(err)
     throw err;        
     console.log("aage...insert");
   }
 
   res.redirect("/sent");
+}
+else{
+ res.send("already sent!"); 
+}
+})
 })
 
 
 
 app.get("/request",backdoor,function(req,res){
-db.collection('travels').find({"Match_id":[req.session.myID]}).toArray(function(err,result){
+  console.log("req.session.myID ye-- "+req.session.myID)
+db.collection('travels').find({"Match_id":req.session.myID}).toArray(function(err,result){
   if (err)
   throw err;
   console.log(result.length);
