@@ -260,7 +260,7 @@ console.log(req.query.otp);
             app.get("/removeReq/:id",backdoor,function(req,res){
               var id=req.params.id;
               console.log("Removing Request id : "+id);
-              db.collection('travels').updateOne({_id:new mongodb.ObjectID(id)},{$set:{"Match_id":[""]}}),function(err,result){
+              db.collection('travels').updateOne({_id:new mongodb.ObjectID(id)},{$pull:{"Match_id":req.session.myID}}),function(err,result){
                   if(err)
                   throw err;    
               }
