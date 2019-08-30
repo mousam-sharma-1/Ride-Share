@@ -32,7 +32,6 @@ const nexmo = new Nexmo({
 
 // app.use(require('express-flash')());
 app.use(express.static('public_pro'));
-//app.use(express.static('views'));
 // app.use(session({
 //   secret: "fd34s@!@dfa453f3DF#$D&W", 
 //   resave: false, 
