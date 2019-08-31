@@ -1,5 +1,9 @@
 <html>
     <body>
+        
+<input type="datetime-local" id="meeting-time"
+name="meeting-time"
+min="2018-06-12T19:30">
         <h2 id="daate"></h2>
         <h3 id="day"></h3>
         <h3 id="date"></h3>
@@ -17,9 +21,12 @@
  var t=new Date().getHours();
   var a=now[0];
   var b=a.split('T'); 
-  document.getElementById('month').innerHTML=b[0]+'T'+t+':'+main.getMinutes();
-  document.getElementById('time').innerHTML=d;
-//$('#my-date-input').prop('min', now[0]+":"+now[1]);
+  document.getElementById('date').innerHTML=b[0]+'T'+t+':'+main.getMinutes();
+  document.getElementById('daate').innerHTML=n;
+  
+  document.getElementById('time').innerHTML=t;
+  document.getElementById('month').innerHTML=b[0];
+  //document.getElementById('time').innerHTML=n;
 //$('#my-date-input2').prop('min', b[0]+'T'+t+':00');
     </script>
 </html>
