@@ -299,7 +299,7 @@ console.log(req.query.otp);
           }
           })
           console.log("nnnnn--"+id1);
-          db.collection('travels').updateOne({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE"}}),function(err,res){
+          db.collection('travels').updateMany({_id:new mongodb.ObjectID(id1)},{$set:{"status":"COMPLETE"}}),function(err,res){
             if(err)
             throw err;
           }
@@ -314,11 +314,14 @@ res.redirect("/sent");
 
 app.get("/history",backdoor,function(req,res){
 
-  db.collection('travels').find({'travelId':req.cookies.userData,'sor_address' : { $ne: "" } }).toArray(function(err,result){
+  db.collection('travels').find({'travelId':req.cookies.userData,'sor_address' : { $ne: "" },"status":"INCOMPLETE" }).toArray(function(err,result){
     if(err)
     throw err;
     console.log(req.cookies.userData);
-    res.render('content',{'name':req.session.fullname,'data':result}); 
+    if(result.length>0)
+    res.render('content',{'name':req.session.fullname,"message":null,'data':result});
+    else
+    res.render('content',{'name':req.session.fullname,"message":"No Rides Made",'data':result});
   })
 })
 
