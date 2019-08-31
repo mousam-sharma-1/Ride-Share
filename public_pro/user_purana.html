@@ -198,8 +198,18 @@ var d = new Date().toLocaleString([], {timeZone: "GMT"});
  var t=new Date().getHours();
   var a=now[0];
   var b=a.split('T'); 
-$('#my-date-input').prop('min', b[0]+'T'+t+':00');
-$('#my-date-input2').prop('min', now[0]+":"+now[1]);
+  var aaa=parseInt(b[1]);
+  aaa--;
+  if(aaa<10){
+aaa="0"+aaa;
+  }
+ // else
+//   {
+//     aaa=a
+//   }
+var ram=b[0]+'T'+aaa+":"+now[1];
+$('#my-date-input').prop('min', ram);
+$('#my-date-input2').prop('min', ram);
 //$('#my-date-input2').prop('min', b[0]+'T'+t+':00');
 
 

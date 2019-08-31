@@ -19,14 +19,23 @@ min="2018-06-12T19:30">
   var n = new Date(d).toISOString();
   var now = n.split(":");
  var t=new Date().getHours();
- var mm=new Date().getMinutes();
+ new Date().setHours();
   var a=now[0];
   var b=a.split('T'); 
-  document.getElementById('daate').innerHTML=b[0]+'T'+t+':'+main.getMinutes();
-  document.getElementById('day').innerHTML=now[0]+':'+now[1];
-  document.getElementById('date').innerHTML=t;
-  document.getElementById('month').innerHTML=mm;
-  document.getElementById('time').innerHTML=t;
+  var aaa=parseInt(b[1]);
+ aaa--;
+  if(aaa<10){
+aaa="0"+aaa;
+  }
+ // else
+//   {
+//     aaa=a
+//   }
+var ram=b[0]+'T'+aaa+":"+now[1];
+  //document.getElementById('daate').innerHTML=b[0]+'T'+t+':'+main.getMinutes();
+  document.getElementById('day').innerHTML=ram+typeof ram;
+ document.getElementById('month').innerHTML=b[0]+"T"+b[1]+":"+now[1];
+//  document.getElementById('time').innerHTML=b[1];
   //document.getElementById('month').innerHTML=b[0];
   //document.getElementById('time').innerHTML=n;
 //$('#my-date-input2').prop('min', b[0]+'T'+t+':00');
