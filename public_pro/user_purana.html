@@ -198,12 +198,12 @@ var d = new Date().toLocaleString([], {timeZone: "GMT"});
  var t=new Date().getHours();
   var a=now[0];
   var b=a.split('T'); 
-  var aaa=parseInt(b[1]);
-  aaa--;
-  if(aaa<10){
-aaa="0"+aaa;
-  }
-var ram=b[0]+'T'+aaa+":"+now[1];
+//   var aaa=parseInt(b[1]);
+//   aaa--;
+//   if(aaa<10){
+// aaa="0"+aaa;
+//   }
+var ram=b[0]+'T'+t+":"+now[1];
 $('#my-date-input').prop('min', ram);
 $('#my-date-input2').prop('min', ram);
 //$('#my-date-input2').prop('min', b[0]+'T'+t+':00');
