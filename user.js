@@ -69,7 +69,16 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     
 
     app.get("",function(req,res){
-      res.redirect("/user");
+      var main=new Date();
+      var xx=main.toISOString();
+      var ff=xx.split(":");
+      var hat=ff[0]+":"+ff[1];
+      console.log(hat);
+      db.collection('travels').deleteMany({'DateTime':{$lte:hat}},function(err,result){
+        if(err)
+            console.log("Removed TIME OUT data.");       
+    });
+    res.redirect("/user");  
     })
 
     app.get("/blog",function(req,res){
