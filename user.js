@@ -419,6 +419,10 @@ app.post('/getMapInput',backdoor,urlEncodedParser,(req,res)=>{
   var desc; 
   var desc_lat;
   var desc_lng;
+  var sorNearby0;
+  var sorNearby1;
+  var desNearby0;
+  var desNearby1;
   var source = req.body.sor;
     var destinition = req.body.des;
     console.log("randome code == "+req.cookies.Rcode);
@@ -432,9 +436,11 @@ app.post('/getMapInput',backdoor,urlEncodedParser,(req,res)=>{
     
      sorc_lat=response[0].latitude;
     console.log(sorc_lat);
+sorNearby0=Math.floor(sorc_lat * 100) / 100;
 
    sorc_lng=response[0].longitude;
    console.log(sorc_lng);
+   sorNearby1=Math.floor(sorc_lng * 100) / 100;
   })
   .catch(function(err) {
     console.log(err);
@@ -448,9 +454,11 @@ app.post('/getMapInput',backdoor,urlEncodedParser,(req,res)=>{
   
   desc_lat=response[0].latitude;
     console.log(response[0].latitude);
-  
+  desNearby0=Math.floor(desc_lat * 100) / 100;
+
   desc_lng=response[0].longitude;
     console.log(response[0].longitude);
+    desNearby1=Math.floor(desc_lng * 100) / 100;
   })
   .catch(function(err) {
     console.log(err);
@@ -460,7 +468,7 @@ setTimeout(()=> {
 console.log('source outside:: '+sorc);
 console.log('Destination outside:: '+desc);
 console.log("CODE=="+req.cookies.Rcode);
-db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng]}}),
+db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng],"sorNearby":[sorNearby0,sorNearby1],"desNearby":[desNearby0,desNearby1]}}),
 function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
 if(err)
 throw err;
@@ -472,7 +480,7 @@ var Utype= req.cookies.Rcode.split("_");
 console.log(Utype[0]);
 if(Utype[0]=="Ri")
 {
-  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","sorNearby":[sorNearby0,sorNearby1],"desNearby":[desNearby0,desNearby1],"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -483,7 +491,7 @@ if(Utype[0]=="Ri")
   })
 }
 else{
-  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sor_address":sorc,"des_address":desc,"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sorNearby":[sorNearby0,sorNearby1],"desNearby":[desNearby0,desNearby1],"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
