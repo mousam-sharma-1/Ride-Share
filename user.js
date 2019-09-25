@@ -73,7 +73,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
       var xx=main.toISOString();
       var ff=xx.split(":");
       var hat=ff[0]+":"+ff[1];
-      console.log(hat);
+      console.log("hat:: "+hat);
       db.collection('travels').deleteMany({'DateTime':{$lte:hat}},function(err,result){
         if(err)
             console.log("Removed TIME OUT data.");       
@@ -350,9 +350,9 @@ function backdoor(req,res,next){
   {
     res.redirect("/log");
   }
-
+else{
   next();
-
+}
 }
 
 
