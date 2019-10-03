@@ -1,9 +1,11 @@
 var express = require('express');
 var app = express();
+var multer= require('multer');
+var path= require('path');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-var client = require('socket.io').listen(4000).sockets;
+//var client = require('socket.io').listen(4000).sockets;
 const Nexmo = require('nexmo');
 var ejs=require('ejs');
 //var jwt=require('jsonwebtoken');
@@ -19,6 +21,19 @@ app.use(session({
     saveUninitialized: true
 }));
 
+
+// multer storage
+var storage= multer.diskStorage({
+  destination:'./public_pro/uploads',
+  filename:function(req,file,cb){
+    cb(null,file.fieldname+'-'+Date.now()+path.extname(file.originalname));
+  }
+})
+
+// upload
+var upload= multer({
+  storage:storage
+}).single('aadh');
 
 
 const nexmo = new Nexmo({
@@ -115,7 +130,18 @@ app.get('/otp',function(req,res){
 app.get("/reg",function(req,res){
         res.render("signup",{"message":null});
     });
-app.post("/doregister",urlEncodedParser,function(req,res){ 
+
+
+app.post('/upload',(req,res)=>{
+  upload(req,res,(err)=>{
+    if(err){
+      res.render('signup',{"message":"Try Again! "+err});
+    } else
+      console.log("file:: /uploads/"+req.file.filename);
+  })
+})
+
+app.post("/doregister",urlEncodedParser,function(req,res){
         var qdata=req.body;                          
         var mobilenumber="91"+qdata.mobile_no;
         var random=Math.floor(Math.random() *9000)+1000;
