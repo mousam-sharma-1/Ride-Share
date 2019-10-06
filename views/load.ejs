@@ -82,12 +82,17 @@ $(".custom-file-input").on("change", function() {
 
 
 function xxx(){
-  if(document.getElementById('customFile').value && document.getElementById('file-input').value){
-  setTimeout(function(){ document.getElementById("form1").submit();}, 1000);   
-setTimeout(function(){ document.getElementById("form2").submit();}, 2000);
+  if(document.getElementById('file-input').value){
+  if(document.getElementById('customFile').value){
+  setTimeout(function(){ document.getElementById("form1").submit();}, 500);   
+setTimeout(function(){ document.getElementById("form2").submit();}, 1000);
 }
 else{
-  document.getElementById('note').innerHTML="SELECT AN IMAGE & Try again !";
+  document.getElementById('note').innerHTML="NO AADHAR CARD IMAGE SELECTED !!";
+}
+}
+else{
+  document.getElementById('note').innerHTML="NO PROFILE SELECTED !!";
 }
 }
 
