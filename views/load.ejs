@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>  
+
+</head>
+<style>
+.navbar-right{
+    position: absolute;
+     top: 20%;
+      left: 90%
+}
+</style>
+<body ng-app="">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        
+                <a href="#" class="navbar-brand">
+                        <img src="11favicon.png" width="35" height="35" class="d-inline-block align-top" alt="">Ride Share
+                    </a>
+        
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#MyNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+        
+                <div class="collapse navbar-collapse" id="MyNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="/user">New Ride</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/history">My Rides</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/request">Request</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                            <!-- <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/reg">SignUp</a></li> -->
+                            <li class="nav-item"><a class="nav-link nav navbar-nav navbar-right" href="/log">LogIn</a></li>
+        
+                    </ul>
+                </div>
+            </nav>
+            <hr><hr>
+           <center><h3 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-style:initial;">UPLOAD ID'S&nbsp&nbsp&nbsp&nbsp&nbsp</h3><br></center> 
+
+            <form action="/avatar" method="POST" name="form1" id="form1" enctype="multipart/form-data">
+              <center><div class="image-upload">
+                       <label for="file-input">
+                          <center><img src="/photo2.png" id="iim" style="cursor: pointer;width: 15%;" /></center>
+                       </label>
+                   
+                       <input id="file-input" type="file" accept="image/*" style="display: none" name="ava" ng-model="ava" required>
+                   </div></center>
+
+       </form>
+
+
+<form action="/upload" method="POST" name="form2" id="form2" enctype="multipart/form-data">
+
+<br>
+  <center><div class="custom-file mb-3" style="width: auto">
+            <input type="file" class="custom-file-input" id="customFile" name="aadh" accept="image/*" ng-model="aadh" required>
+            <label class="custom-file-label" for="customFile">Choose file</label>
+          </div></center>
+       <!-- <center><input class="file-input" type="file" accept="image/*" id="im" name="aadh" ng-model="aadh" required></center> -->
+        <br>
+    </form>
+
+    <center>  <button class = "btn btn-outline-dark" type="submit" onclick=xxx()>UPLOAD</button><br>
+    <span id="note" style="color: red"></span></center>
+
+  </body>
+<script>
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+
+
+function xxx(){
+  if(document.getElementById('customFile').value && document.getElementById('file-input').value){
+  setTimeout(function(){ document.getElementById("form1").submit();}, 1000);   
+setTimeout(function(){ document.getElementById("form2").submit();}, 2000);
+}
+else{
+  document.getElementById('note').innerHTML="SELECT AN IMAGE & Try again !";
+}
+}
+
+</script>
+  </html>

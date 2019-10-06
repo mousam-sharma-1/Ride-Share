@@ -35,10 +35,25 @@ var upload= multer({
   storage:storage
 }).single('aadh');
 
+var storage2= multer.diskStorage({
+  destination:'./public_pro/avatars',
+  filename:function(req,file,cb){
+    cb(null,file.fieldname+'-'+Date.now()+path.extname(file.originalname));
+  }
+})
+
+var upload2= multer({
+  storage:storage2
+}).single('ava');
+
+
+//const from = '18482713356';
 
 const nexmo = new Nexmo({
-  apiKey: '8630972e',
-  apiSecret: 'jieBARyFP3DhHNwL',
+  apiKey: '80830d1b',
+  apiSecret: 'ZgtbVYpk1EML5pom',
+  // apiKey: '8630972e',
+  //apiSecret: 'jieBARyFP3DhHNwL',
   //apiKey: 'be76a80b',
   //apiSecret: 'k7NeXeb3ExKvsmAR',
 });
@@ -114,6 +129,7 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
 
 
 app.get('/otp',function(req,res){
+  console.log("/otp : "+req.session.mob);
   res.render("otp",{"message":null});
 })
 
@@ -133,13 +149,45 @@ app.get("/reg",function(req,res){
 
 
 app.post('/upload',(req,res)=>{
+  console.log("aad::"+req.session.mob);
+
   upload(req,res,(err)=>{
     if(err){
       res.render('signup',{"message":"Try Again! "+err});
-    } else
-      console.log("file:: /uploads/"+req.file.filename);
+    } else{
+      db.collection('t_user').updateOne({mobile_no:req.session.mob},{$set:{'AADHAR':"/uploads/"+req.file.filename}},function(err,Result){ 
+        if (err)
+        throw err;
+
+         console.log("file:: /uploads/"+req.file.filename);
+       res.redirect("/24");
+    })
+  }
   })
 })
+
+app.get("/24",function(req,res){
+  res.render('24');
+})
+
+app.post('/avatar',(req,res)=>{
+  upload2(req,res,(err)=>{
+    if(err){
+      console.log(err);
+      res.render('signup',{"message":"Try Again! "+err});
+    } else{
+      console.log("profile:: /uploads/"+req.file.filename);
+      console.log("p::"+req.session.mob);
+
+      db.collection('t_user').updateOne({mobile_no:req.session.mob},{$set:{'profile':"/avatars/"+req.file.filename}},function(err,Result){ 
+        if (err)
+        throw err;
+      })
+     // res.redirect("/24");
+    }
+  })
+})
+
 
 app.post("/doregister",urlEncodedParser,function(req,res){
         var qdata=req.body;                          
@@ -148,20 +196,14 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         var otp=random.toString();
         console.log(otp);
         console.log(random);
-        const from = 'Nexmo';
-        const to = '917000944479';
+        const from = '18482713356';    // const from = 'Nexmo';
+        const to = '15625928787';    //917000944479
         const text = qdata.mobile_no+" - OTP : "+random;
-
-
-
-        
 
         req.session.mob=mobilenumber;
         req.session.fullname=qdata.name;
         
-     
-
-    console.log(mobilenumber);
+    console.log("mobilenumber "+req.session.mob);
         console.log("password =>"+qdata.password);
         db.collection('t_user').find({'mobile_no':mobilenumber,"otp":"success"}).toArray(function(err,result){
           if(err)
@@ -178,7 +220,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
              } else {
        console.log(responseData);
        console.log(otp);
-        db.collection('t_user').insertOne({name:qdata.name,mobile_no:mobilenumber,otp:otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password}),function(err,Result){
+        db.collection('t_user').insertOne({'profile':'',name:qdata.name,mobile_no:mobilenumber,otp:otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password,"AADHAR":''}),function(err,Result){
         if(err)
         throw err;        
       }
@@ -186,20 +228,26 @@ console.log("aage...")
       }
       })
       res.redirect("/otp");
+//      res.redirect("/khali");
+      //res.redirect(307,"/upload");
     }
   })
 });
+app.get("/khali",function(req,res){
+  res.render('load');
+})
 
 app.get('/checkOtp',function(req,res){
 console.log("entered..."+req.session.mob);
 console.log(req.query.otp);
   db.collection('t_user').find({mobile_no:req.session.mob,otp:req.query.otp}).toArray(function(err,result){
+    if(result.length==1){
     var q=result[0]._id;
     var data=result[0];
     console.log(JSON.stringify(result[0]));
     console.log("result.otp"+data.otp);
       // console.log(result)
-      if(result.length==1){
+      
         console.log("result _id ="+q);
         res.cookie('userData',mongodb.ObjectId(q), {maxAge:600000000, httpOnly: true});
         res.cookie('Rcode', null, {maxAge:600000000, httpOnly: true});
@@ -208,9 +256,9 @@ console.log(req.query.otp);
       
           // if(err)
         // throw err;
-        req.session.is_user_logged_in=true;
+       // req.session.is_user_logged_in=true;
             console.log("otpsuccess");
-            res.redirect("/user");
+            res.redirect("/khali");
       })
       
     }
@@ -312,8 +360,8 @@ console.log(req.query.otp);
                 console.log(res[0].mobile_no);
                 console.log(req.session.mob);
              if(res.length>0){
-                const from = 'Nexmo';
-              const to = '917000944479';    //const to = req.session.mob;
+              const from = '18482713356';   //  const from = 'Nexmo';
+              const to = '15625928787';    //const to = req.session.mob;
               const text ="Sucessfull Connection !! contact "+res[0].name+" - "+res[0].mobile_no+" For your Ride ,Thanks For Use.";
               nexmo.message.sendSms(from, to, text,(err, responseData) => {
                 if (err) 
@@ -322,8 +370,8 @@ console.log(req.query.otp);
             })
             another();
            function another(){
-            const from = 'Nexmo';
-            const to = '917000944479';    //const to = res[0].mobile_no;
+            const from = '18482713356';     //const from = 'Nexmo';
+            const to = '15625928787';    //const to = res[0].mobile_no;
             const text ="Sucessfull Connection !! contact "+req.session.fullname+" - "+req.session.mob+" For your Ride ,Thanks For Use.";
             nexmo.message.sendSms(from, to, text,(err, responseData) => {
               if (err) 
@@ -610,8 +658,8 @@ app.get("/chat/:travelId/:id",backdoor,function(req,res){
     console.log(req.session.fullname);
     console.log(res[0].name);
     console.log(res[0].mobile_no);
-    const from = 'Nexmo';
-    const to = '917000944479';    // const to = res[0].mobile_no;
+    const from = '18482713356';    //const from = 'Nexmo';
+    const to = '15625928787';    // const to = res[0].mobile_no;
     const text ="Request From "+req.session.fullname+" To You "+res[0].name+"("+res[0].mobile_no+") For Ride Share";
     nexmo.message.sendSms(from, to, text,(err, responseData) => {
       if (err) 
