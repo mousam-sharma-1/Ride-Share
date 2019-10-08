@@ -13,11 +13,20 @@
 
 </head>
 <style>
+@media screen and (max-width: 600px) {
+#iim {
+    width: 20%;
+}
+}
+
   @media screen and (min-width: 900px) {
 .navbar-right{
     position: absolute;
      top: 20%;
       left: 90%
+}
+#iim {
+    width: 15%;
 }
   }
 </style>
@@ -52,21 +61,23 @@
             <form action="/avatar" method="POST" name="form1" id="form1" enctype="multipart/form-data">
               <center><div class="image-upload">
                        <label for="file-input">
-                          <center><img src="/photo2.png" id="iim" style="cursor: pointer;width: 15%;" /></center>
+                          <center><img src="/photo2.png" id="iim" style="cursor: pointer;" /></center>
                        </label>
                    
                        <input id="file-input" type="file" accept="image/*" style="display: none" name="ava" ng-model="ava" required>
-                   </div></center>
+                 <br> <span class="file-label"></span>
+                      </div></center>
 
        </form>
 
-
-<form action="/upload" method="POST" name="form2" id="form2" enctype="multipart/form-data">
-
 <br>
-  <center><div class="custom-file mb-3" style="width: auto">
+       <form action="/upload" method="POST" name="form2" id="form2" enctype="multipart/form-data">
+        
+ <center>
+    <div><b>AADHAR CARD IMAGE : </b></div> <br>
+  <div class="custom-file mb-3" style="width: auto">
             <input type="file" class="custom-file-input" id="customFile" name="aadh" accept="image/*" ng-model="aadh" required>
-            <label class="custom-file-label" for="customFile">Choose file</label>
+            <label class="custom-file-label" for="customFile"><b>Choose file</b></label>
           </div></center>
        <!-- <center><input class="file-input" type="file" accept="image/*" id="im" name="aadh" ng-model="aadh" required></center> -->
         <br>
@@ -80,6 +91,11 @@
 $(".custom-file-input").on("change", function() {
   var fileName = $(this).val().split("\\").pop();
   $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+
+$("#file-input").on("change", function() {
+  var fileName2 = $(this).val().split("\\").pop();
+  $(this).siblings(".file-label").addClass("selected").html(fileName2);
 });
 
 
