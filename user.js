@@ -32,7 +32,8 @@ var storage= multer.diskStorage({
 
 // upload
 var upload= multer({
-  storage:storage
+  storage:storage,
+  limits:{fileSize: 1000000}
 }).single('aadh');
 
 var storage2= multer.diskStorage({
@@ -43,7 +44,8 @@ var storage2= multer.diskStorage({
 })
 
 var upload2= multer({
-  storage:storage2
+  storage:storage2,
+  limits:{fileSize: 1000000}
 }).single('ava');
 
 
@@ -153,7 +155,7 @@ app.post('/upload',(req,res)=>{
 
   upload(req,res,(err)=>{
     if(err){
-      res.render('signup',{"message":"Try Again! "+err});
+      res.render('load',{"message":"Try Again! "+err});
     } else{
       db.collection('t_user').updateOne({mobile_no:req.session.mob},{$set:{'AADHAR':"/uploads/"+req.file.filename}},function(err,Result){ 
         if (err)
@@ -174,7 +176,7 @@ app.post('/avatar',(req,res)=>{
   upload2(req,res,(err)=>{
     if(err){
       console.log(err);
-      res.render('signup',{"message":"Try Again! "+err});
+      res.render('load',{"message":"Try Again! "+err});
     } else{
       console.log("profile:: /uploads/"+req.file.filename);
       console.log("p::"+req.session.mob);
@@ -220,7 +222,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
              } else {
        console.log(responseData);
        console.log(otp);
-        db.collection('t_user').insertOne({'profile':'',name:qdata.name,mobile_no:mobilenumber,otp:otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password,"AADHAR":''}),function(err,Result){
+        db.collection('t_user').insertOne({'profile':'',name:qdata.name,mobile_no:mobilenumber,otp:otp,gender:qdata.gender,Dob:qdata.age,work:qdata.work,password:qdata.password,"AADHAR":'',"Account":''}),function(err,Result){
         if(err)
         throw err;        
       }
@@ -234,7 +236,7 @@ console.log("aage...")
   })
 });
 app.get("/khali",function(req,res){
-  res.render('load');
+  res.render('load',{"message":null});
 })
 
 app.get('/checkOtp',function(req,res){
@@ -285,7 +287,7 @@ console.log(req.query.otp);
       console.log("Mob. no. entered:: "+mob);
       console.log("password entered:: "+pass);
 
-        db.collection('t_user').find({mobile_no:mob,password:pass,otp:"success"}).toArray(function(err,result){
+        db.collection('t_user').find({mobile_no:mob,password:pass,otp:"success","Account":'verified'}).toArray(function(err,result){
           //var data={ };
         if(result.length>0){
 
