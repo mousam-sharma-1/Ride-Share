@@ -44,5 +44,9 @@
                 </div>
             </nav>
     <h2><i>24 hours time!!</i></h2>
+    <% data.forEach(function(p){ %>
+        <h3><%=p.name%></h3>
+<img src="<%=p.profile%>">
+        <%})%>
 </body>
 </html>

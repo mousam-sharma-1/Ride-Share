@@ -5,6 +5,7 @@ var path= require('path');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var map = require("google_directions")
 //var client = require('socket.io').listen(4000).sockets;
 const Nexmo = require('nexmo');
 var ejs=require('ejs');
@@ -169,7 +170,15 @@ app.post('/upload',(req,res)=>{
 })
 
 app.get("/24",function(req,res){
-  res.render('24');
+  console.log("IN @24")
+  db.collection('t_user').find({mobile_no:req.session.mob}).toArray(function(err,resul){
+    if(err)
+    throw err;
+    console.log(":::res:::"+resul.length) 
+     console.log(":::res:::"+resul[0].profile)
+     res.render('24',{"data":resul});
+  })
+  
 })
 
 app.post('/avatar',(req,res)=>{
@@ -207,7 +216,7 @@ app.post("/doregister",urlEncodedParser,function(req,res){
         
     console.log("mobilenumber "+req.session.mob);
         console.log("password =>"+qdata.password);
-        db.collection('t_user').find({'mobile_no':mobilenumber,"otp":"success"}).toArray(function(err,result){
+        db.collection('t_user').find({'mobile_no':mobilenumber,"Account":"verified"}).toArray(function(err,result){
           if(err)
           throw err;
 
@@ -500,7 +509,26 @@ app.post('/getMapInput',backdoor,urlEncodedParser,(req,res)=>{
   var desNearby0;
   var desNearby1;
   var source = req.body.sor;
-    var destinition = req.body.des;
+  var destinition = req.body.des;
+
+console.log(source);
+  var params = {
+    origin: source,
+    destination: destinition,
+    key: "AIzaSyCQ2l2mGOB24ZWMaxOt3fasayoNXM8NdAo",
+    }
+    map.getDirections(params, function (err, data) {
+        if (err) {
+            console.log(err);
+            return 1;
+        }
+        console.log("steps : "+data.routes[0].legs[0].steps[0].end_location.lat);
+        console.log("steps roundoff : "+Math.floor(data.routes[0].legs[0].steps[0].end_location.lat * 100) / 100);
+        console.log("steps roundoff : "+Math.floor(data.routes[0].legs[0].steps[0].end_location.lng * 100) / 100);
+        console.log("steps len : "+data.routes[0].legs[0].steps.length);
+    });
+
+
     console.log("randome code == "+req.cookies.Rcode);
   console.log("now:::"+req.cookies.userData);
 
@@ -578,13 +606,16 @@ res.render('result',{'message':"No Match Found",'data':result});
   })
 }
 },2000);
-  }
+}
   getValue();
 })
 
 
 
 app.post("/view/:id",backdoor,function(req,res){
+
+
+
   var idv=req.params.id;
   console.log("VIEW ID "+idv+" TYPE OF =="+typeof idv);
   
