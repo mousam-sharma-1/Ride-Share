@@ -169,22 +169,31 @@ app.post('/upload',(req,res)=>{
   })
 })
 
+// app.get("/24",function(req,res){
+//   console.log("IN @24")
+//   db.collection('t_user').find({mobile_no:req.session.mob,"profile":{$ne:""}}).toArray(function(err,resul){
+//     if(err)
+//     throw err;
+//     console.log(":::res:::"+resul.length) 
+//     if(resul.length>0){
+//      console.log(":::res:::"+resul[0].profile)
+//      res.render('24',{"data":resul});
+//     }
+//     else{
+//      res.render('24',{"data":null});
+//     }
+//  })
+  
+// })
+
+
+
 app.get("/24",function(req,res){
   console.log("IN @24")
-  db.collection('t_user').find({mobile_no:req.session.mob,"profile":{$ne:""}}).toArray(function(err,resul){
-    if(err)
-    throw err;
-    console.log(":::res:::"+resul.length) 
-    if(resul.length>0){
-     console.log(":::res:::"+resul[0].profile)
-     res.render('24',{"data":resul});
-    }
-    else{
-     res.render('24',{"data":null});
-    }
- })
-  
+ res.render('24');
 })
+
+
 
 app.post('/avatar',(req,res)=>{
   upload2(req,res,(err)=>{
