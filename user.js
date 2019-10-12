@@ -512,6 +512,7 @@ app.get("/map",backdoor,function(req,res){
 
 });
 app.post('/getMapInput',backdoor,urlEncodedParser,(req,res)=>{
+  var pathArr=[];
   var sorc; 
   var sorc_lat;
   var sorc_lng;
@@ -536,11 +537,28 @@ console.log(source);
             console.log(err);
             return 1;
         }
-        console.log("steps : "+data.routes[0].legs[0].steps[0].end_location.lat);
-        console.log("steps roundoff : "+Math.floor(data.routes[0].legs[0].steps[0].end_location.lat * 100) / 100);
-        console.log("steps roundoff : "+Math.floor(data.routes[0].legs[0].steps[0].end_location.lng * 100) / 100);
         console.log("steps len : "+data.routes[0].legs[0].steps.length);
-    });
+for(var i=0;i<data.routes[0].legs[0].steps.length;i++){
+//         console.log("steps"+i+" : "+data.routes[0].legs[0].steps[i].end_location.lat);
+//         console.log("steps roundoff "+i+": "+Math.floor(data.routes[0].legs[0].steps[i].end_location.lat * 100) / 100);
+// console.log("steps"+i+" : "+data.routes[0].legs[0].steps[i].end_location.lng);
+//         console.log("steps roundoff : "+Math.floor(data.routes[0].legs[0].steps[i].end_location.lng * 100) / 100);
+//pathArr+=[Math.floor(data.routes[0].legs[0].steps[i].end_location.lat * 100) / 100,Math.floor(data.routes[0].legs[0].steps[i].end_location.lng * 100) / 100];
+pathArr.push({"lat":Math.floor(data.routes[0].legs[0].steps[i].end_location.lat * 100) / 100,"lng":Math.floor(data.routes[0].legs[0].steps[i].end_location.lng * 100) / 100})
+      
+  }
+      console.log("pathArr::"+pathArr);
+     // for(var i=0;i<data.routes[0].legs[0].steps.length;i++){
+//console.log("p: "+pathArr);
+        db.collection('travels').updateOne({code:req.cookies.Rcode},{$set:{"pathA":pathArr,"pathB":pathArr}}),function(err,Result){
+          if(err)
+          throw err;        
+          console.log("aage...insert");
+        }
+    
+    
+      //}
+      });
 
 
     console.log("randome code == "+req.cookies.Rcode);
@@ -586,7 +604,7 @@ setTimeout(()=> {
 console.log('source outside:: '+sorc);
 console.log('Destination outside:: '+desc);
 console.log("CODE=="+req.cookies.Rcode);
-db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng],"sorNearby":[sorNearby0,sorNearby1],"desNearby":[desNearby0,desNearby1]}}),
+db.collection('travels').updateOne({'travelId':req.cookies.userData,'code':req.cookies.Rcode},{$set:{"sor_address":sorc,"sor_coordinates":[sorc_lat,sorc_lng],"des_address":desc,"des_coordinates":[desc_lat,desc_lng],"sorNearby":{"lat":sorNearby0,"lng":sorNearby1},"desNearby":{"lat":desNearby0,"lng":desNearby1}}}),
 function(err,Result){          //'lat':source.response[0].latitude,'lng':source.response[0].longitude,      //,'lat':destinition.response[0].latitude,'lng':destinition.response[0].longitude
 if(err)
 throw err;
@@ -598,7 +616,8 @@ var Utype= req.cookies.Rcode.split("_");
 console.log(Utype[0]);
 if(Utype[0]=="Ri")
 {
-  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","sorNearby":[sorNearby0,sorNearby1],"desNearby":[desNearby0,desNearby1],"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","pathA":{$all:[{"$elemMatch":{"lat":sorNearby0,"lng":sorNearby1}},{"$elemMatch":{"lat":desNearby0,"lng":desNearby1}}]},"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+//    db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Driver","pathA":{$elemMatch:{"lat":sorNearby0,"lng":sorNearby1}},"pathB":{$elemMatch:{"lat":desNearby0,"lng":desNearby1}},"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -609,7 +628,8 @@ if(Utype[0]=="Ri")
   })
 }
 else{
-  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sorNearby":[sorNearby0,sorNearby1],"desNearby":[desNearby0,desNearby1],"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  console.log("+++++DR+++++"+pathArr);
+  db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sorNearby":{$in:pathArr},"desNearby":{$in:pathArr},"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -639,7 +659,16 @@ app.post("/view/:id",backdoor,function(req,res){
     console.log(data);
   console.log("req.cookies.userData "+data.travelId);
   
-  console.log("sorc "+data.sor_address);
+  console.log("sorc=========== "+data.sorNearby);
+  console.log("ARRsorc=========== "+data.pathA[0]);
+
+if(data.pathA[0]==data.sorNearby){
+  console.log("++++++++++++++++++++++++++YES+++++++++++++++++++++");
+}
+else{
+  console.log("---------------no---------------------")
+}
+
 
   console.log("desc"+data.des_address)
 
@@ -652,7 +681,7 @@ app.post("/view/:id",backdoor,function(req,res){
 console.log(Utype[0]);
 if(Utype[0]=="Ri")
 {
-  db.collection('travels').find({'travelId': { $ne:data.travelId },"type":"Driver","sor_address":data.sor_address,"des_address":data.des_address,"Seat":{$gte:data.Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne:data.travelId },"type":"Driver","pathA":{$all:[{"$elemMatch":data.sorNearby},{"$elemMatch":data.desNearby}]},"Seat":{$gte:data.Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
   console.log("RES::"+result.length);
@@ -663,10 +692,11 @@ if(Utype[0]=="Ri")
   })
 }
 else{
-  db.collection('travels').find({'travelId': { $ne:data.travelId },"type":"Rider","sor_address":data.sor_address,"des_address":data.des_address,"Seat":{$gte:data.Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
+  db.collection('travels').find({'travelId': { $ne:data.travelId },"type":"Rider","sorNearby":{$in:data.pathA},"desNearby":{$in:data.pathA},"Seat":{$gte:data.Seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
-  console.log("RES::"+result.length);
+   // console.log("RES::======"+result);
+    console.log("RES ye::"+result.length);
   if(result.length>0)
   res.render('result',{'message':null,'data':result});
 else
