@@ -142,7 +142,7 @@ app.get('/otp',function(req,res){
         });
 
 
-        app.get('/min_pro_clg/manifest.json',function(req,res){
+    app.get('/min_pro_clg/manifest.json',function(req,res){
           res.sendFile(__dirname+"/manifest.json")
           });
 
