@@ -114,6 +114,10 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     res.redirect("/user");  
     })
 
+    app.get("/js/app.js",function(req,res){
+      res.sendFile(__dirname+"/js/app.js")
+    })
+
     app.get("/blog",function(req,res){
       res.sendFile(__dirname+"/public_pro/blog.html")
     })
