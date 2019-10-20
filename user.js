@@ -121,6 +121,12 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
     app.get("/blog",function(req,res){
       res.sendFile(__dirname+"/public_pro/blog.html")
     })
+    app.get("/nav",function(req,res){
+      res.sendFile(__dirname+"/public_pro/navbar.html")
+    })
+    app.get("/fallback.html",function(req,res){
+      res.sendFile(__dirname+"/public_pro/fallback.html")
+    })
 
     app.get("/about",function(req,res){
       res.sendFile(__dirname+"/public_pro/about.html"); 
