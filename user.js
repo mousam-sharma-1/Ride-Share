@@ -88,13 +88,11 @@ mongoClient.connect(url,{ useNewUrlParser: true }).then(function(con){
  
     var options = {
       provider: 'google',
-     
       // Optional depending on the providers
       httpAdapter: 'https', // Default
-      //apiKey: 'AIzaSyAIKBwIgz6GFw5m2NM4vE9Om84P2hUXnf8', // billing enabled key(Ankit sir Stoway)
       apiKey: 'AIzaSyCQ2l2mGOB24ZWMaxOt3fasayoNXM8NdAo', // billing enable(Akash)
       //apiKey: 'AIzaSyAnE8izq7BaeFr_HkCUyb3L99NCFM2rQRo', //Mousam
-      formatter: null         // 'gpx', 'string', ...
+      formatter: null        // 'gpx', 'string', ...
     };
 
      
@@ -540,13 +538,12 @@ console.log(source);
   var params = {
     origin: source,
     destination: destinition,
-    key: "AIzaSyCQ2l2mGOB24ZWMaxOt3fasayoNXM8NdAo",
+    key: "AIzaSyCQ2l2mGOB24ZWMaxOt3fasayoNXM8NdAo"
     }
     map.getDirections(params, function (err, data) {
-        if (err) {
-            console.log(err);
-            return 1;
-        }
+        if (err) 
+          throw err;
+          else{
         console.log("steps len : "+data.routes[0].legs[0].steps.length);
 for(var i=0;i<data.routes[0].legs[0].steps.length;i++){
 //         console.log("steps"+i+" : "+data.routes[0].legs[0].steps[i].end_location.lat);
@@ -560,7 +557,8 @@ pathArr.push({"lat":Math.floor(data.routes[0].legs[0].steps[i].end_location.lat 
       console.log("pathArr::"+pathArr);
      // for(var i=0;i<data.routes[0].legs[0].steps.length;i++){
 //console.log("p: "+pathArr);
-        db.collection('travels').updateOne({code:req.cookies.Rcode},{$set:{"pathA":pathArr,"pathB":pathArr}}),function(err,Result){
+//db.collection('travels').updateOne({code:req.cookies.Rcode},{$set:{"pathA":pathArr,"pathB":pathArr}}),function(err,Result){
+  db.collection('travels').updateOne({code:req.cookies.Rcode},{$set:{"pathA":pathArr}}),function(err,Result){
           if(err)
           throw err;        
           console.log("aage...insert");
@@ -568,47 +566,66 @@ pathArr.push({"lat":Math.floor(data.routes[0].legs[0].steps[i].end_location.lat 
     
     
       //}
-      });
+    }
+      })
 
 
     console.log("randome code == "+req.cookies.Rcode);
   console.log("now:::"+req.cookies.userData);
-
-    geocoder.geocode(source)
-    .then(function(response) {
+  // codeAddress();
+  // function codeAddress() {
+  //   geocoder.geocode({
+  //     componentRestrictions: {
+  //       country: 'IN'
+  //     }
+  //   }, function(results, status) {
+  //     if (status == 'OK') {
+        geocoder.geocode(source)
+        .then(function(response) {
+        console.log("c---"+response[0].countryCode) //countryCode
+        sorc=response[0].formattedAddress;
+      console.log('Source:: '+sorc);
+        
+         sorc_lat=response[0].latitude;
+        console.log(sorc_lat);
+    sorNearby0=Math.floor(sorc_lat * 100) / 100;
     
-    sorc=response[0].formattedAddress;
-  console.log('Source:: '+sorc);
+       sorc_lng=response[0].longitude;
+       console.log(sorc_lng);
+       sorNearby1=Math.floor(sorc_lng * 100) / 100;
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
     
-     sorc_lat=response[0].latitude;
-    console.log(sorc_lat);
-sorNearby0=Math.floor(sorc_lat * 100) / 100;
+      geocoder.geocode(destinition)
+      .then(function(response) {
+        console.log("c---"+response[0].countryCode) //countryCode
+    
+        desc=response[0].formattedAddress;
+      console.log('Destination:: '+desc);
+      
+      desc_lat=response[0].latitude;
+        console.log(response[0].latitude);
+      desNearby0=Math.floor(desc_lat * 100) / 100;
+    
+      desc_lng=response[0].longitude;
+        console.log(response[0].longitude);
+        desNearby1=Math.floor(desc_lng * 100) / 100;
+      
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+    //   } else {
+    //     res.send('Geocode was not successful for the following reason: ' + status);
+    //     return 1;
+    //   }
+    // });
+    // }
 
-   sorc_lng=response[0].longitude;
-   console.log(sorc_lng);
-   sorNearby1=Math.floor(sorc_lng * 100) / 100;
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
 
-  geocoder.geocode(destinition)
-  .then(function(response) {
-
-    desc=response[0].formattedAddress;
-  console.log('Destination:: '+desc);
-  
-  desc_lat=response[0].latitude;
-    console.log(response[0].latitude);
-  desNearby0=Math.floor(desc_lat * 100) / 100;
-
-  desc_lng=response[0].longitude;
-    console.log(response[0].longitude);
-    desNearby1=Math.floor(desc_lng * 100) / 100;
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
+    
   function getValue() {
 setTimeout(()=> {
 console.log('source outside:: '+sorc);
@@ -638,7 +655,7 @@ if(Utype[0]=="Ri")
   })
 }
 else{
-  console.log("+++++DR+++++"+pathArr);
+ // console.log("+++++DR+++++"+pathArr);
   db.collection('travels').find({'travelId': { $ne: req.cookies.userData },"type":"Rider","sorNearby":{$in:pathArr},"desNearby":{$in:pathArr},"Seat":{$gte:req.cookies.seat},"status":"INCOMPLETE"}).toArray(function(err,result){
     if(err)
     throw err;
@@ -651,6 +668,7 @@ res.render('result',{'message':"No Match Found",'data':result});
 }
 },2000);
 }
+
   getValue();
 })
 

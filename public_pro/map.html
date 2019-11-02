@@ -73,16 +73,79 @@ margin-left:40%;
 </head>
 
 <script>
+     var input1;
+     var input2;
+     var IsplaceChange=false;
+     var IsplaceChange2=false;
+
+    var options = {
+            componentRestrictions: {country: "IN"}
+        };
+
         function initialize() {
-        var input1 = document.getElementById('sor');
+        input1 = document.getElementById('sor');
 
-        var input2 = document.getElementById('des');
+        input2 = document.getElementById('des');
+//         new google.maps.places.Autocomplete(input1,options);
 
-        new google.maps.places.Autocomplete(input1);
-        
-        new google.maps.places.Autocomplete(input2);
+// new google.maps.places.Autocomplete(input2,options);
+
+    //     sor.addEventListener('keydown',function(){
+    //         console.log(event.which || event.keyCode)
+    //     if(event.keyCode===13){
+    //      //  document.getElementById('sor').value=new google.maps.places.Autocomplete(input1,options);
+    //        console.log(google.maps.places.Autocomplete(input1))
+    //     }
+    // else{
+    //     console.log("NO")
+    // }
+    //})
+
+    var autocomplete = new google.maps.places.Autocomplete(input1,options);
+    var autocomplete2 = new google.maps.places.Autocomplete(input2,options);
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            if(place.address_components){
+            console.log(place.address_components)
+            IsplaceChange = true;
+            document.getElementById('sormess').innerHTML="";
+            }
+            else{
+               // alert('select from the list');
+               document.getElementById('sormess').innerHTML="select from the list";
+
+                document.getElementById('sor').value=null;
+            }
+        })
+       
+    google.maps.event.addListener(autocomplete2, 'place_changed', function () {
+            var place2 = autocomplete2.getPlace();
+            if(place2.address_components){
+            console.log("2nd "+place2.address_components)
+            IsplaceChange2 = true;
+            document.getElementById('desmess').innerHTML="";
+
+            }
+            else{
+               // alert('select from the list');
+               document.getElementById('desmess').innerHTML="select from the list";
+
+                document.getElementById('des').value=null;
+            }
+        })
         }
         google.maps.event.addDomListener(window, 'load', initialize);
+
+        function functionss(){
+            if(IsplaceChange===false && IsplaceChange2===false){
+            document.getElementById('sor').value=null;
+            document.getElementById('des').value=null;
+            document.getElementById('sormess').innerHTML="select from the list";
+            document.getElementById('desmess').innerHTML="select from the list";
+//            document.getElementById('msg').innerHTML="SELECT A PROPER ADDRESS !"
+            }
+    }
         </script>
 
 <body>
@@ -115,14 +178,17 @@ margin-left:40%;
     <form action="/getMapInput" method="POST" name="myForm">
         <div class = "form-group">
             <input id="sor" class = "form-control"  type = "text" placeholder = "Source" name ="sor" ng-model="sor" required>
+            <center><span id="sormess" style="color: red;"></span></center>
         </div>
         <div class = "form-group">
                 <input id="des" class = "form-control" type = "text" placeholder = "Destinition" name ="des" ng-model="des" required>
+                <center><span id="desmess" style="color: red;"></span></center>
             </div>
     
         <div class = "form-group">
-            <input class = "btn btn-success" id="b" type = "submit" value = "Save My Location">
-        </div>
+            <input class = "btn btn-success" id="b" type = "submit" onclick=functionss() value = "Save My Location">
+        </div><br>
+        <center><span id="msg" style="color: red;"></span></center>
     </form>
 </body>
 </html>
